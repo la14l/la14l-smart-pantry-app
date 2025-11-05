@@ -1,4 +1,3 @@
-```markdown
 # 🧠 Smart Pantry — Teammate Onboarding
 
 ## 1️⃣ What we’re building
@@ -9,11 +8,8 @@ We must apply OOP concepts (classes, inheritance, interfaces, polymorphism, coll
 
 🗓 **Deadline:** Sunday, Nov 24, 2025 @ 11:59 PM (Asia/Dubai)
 
----
-
 ## 2️⃣ Repo layout
-```
-
+```markdown
 la14l-smart-pantry-app/
 ├─ src/main/java/pantryAppPackage/
 │  ├─ Main.java                 // entry point
@@ -24,11 +20,8 @@ la14l-smart-pantry-app/
 ├─ src/main/resources/          // FXML/CSS/images later if needed
 ├─ data/                        // (create soon) users.txt, items.txt, shopping_lists.txt
 ├─ .gitignore                   // ignores .idea/, out/, target/
-├─ LICENSE, README.md
-└─ (Optional) .github/workflows/build.yml
-
+└─ LICENSE, README.md
 ````
-
 ### Data files (plain text)
 - **users.txt** – user registration/login records  
 - **items.txt** – pantry items, updated after every action  
@@ -41,7 +34,7 @@ la14l-smart-pantry-app/
    ```bash
    git clone https://github.com/<OWNER>/la14l-smart-pantry-app.git
    cd la14l-smart-pantry-app
-````
+   ````
 
 2. **Open in IntelliJ** – open the *project root* (not `src/`)
 3. **JDK 17** – *File → Project Structure → Project SDK = 17*
