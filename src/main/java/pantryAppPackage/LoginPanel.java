@@ -3,127 +3,181 @@ package main.java.pantryAppPackage;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 
 public class LoginPanel extends JPanel {
-    JLabel registerLoginLabel, usernameTextLabel, passwordTextLabel;
-    JTextField usernameTextField;
-    JPasswordField passwordField;
-    JButton registerLoginButton, registerChoiceButton, loginChoiceButton;
+    // Labels
+    JLabel loginLabel, registerLabel, usernameLabel, passwordLabel, emailLabel, phoneLabel;
 
+    // Inputs
+    JTextField usernameField, emailField, phoneField;
+    JPasswordField passwordField;
+
+    // Buttons
+    JButton enterButton, registerChoiceButton, loginChoiceButton;
+
+    // Values
     boolean operationIsLogin = true;
     String username;
     String password;
-    boolean authenticated = false;
+    String phoneNumber;
+    String email;
 
     public LoginPanel() {
-        // Setting the layout of the panel to a GridBagLayout.
+        // Base layout
         setLayout(new GridBagLayout());
-        // Using this class to create constraints object c for each panel element.
+        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(10, 10, 10, 10);
+        c.fill = GridBagConstraints.HORIZONTAL;
 
-        // Set the fonts.
-        UIManager.put("Label.font", new Font("SansSerif", Font.BOLD, 15));
-        UIManager.put("Button.font", new Font("SansSerif", Font.BOLD, 15));
-        UIManager.put("TextField.font", new Font("SansSerif", Font.BOLD, 15));
-
-        c.insets = new Insets(10, 10, 10, 10); // padding between components
-        c.fill = GridBagConstraints.HORIZONTAL; // Making the components fill their horizontal space
-
-
-        // Title
-        registerLoginLabel = new JLabel("Login / Register", SwingConstants.CENTER);
+        // Fonts (panel-scoped)
+        Font labelFont = new Font("SansSerif", Font.BOLD, 16);
+        Font fieldFont = new Font("SansSerif", Font.PLAIN, 16);
         Font titleFont = new Font("SansSerif", Font.BOLD, 20);
+
+        // Title (Add one these based on the mode)
+        loginLabel = new JLabel("Login", SwingConstants.CENTER);
+        loginLabel.setFont(titleFont);
+
+        registerLabel = new JLabel("Register", SwingConstants.CENTER);
+        registerLabel.setFont(titleFont);
+
         c.gridx = 0;
         c.gridy = 0;
         c.gridwidth = 2;
-        registerLoginLabel.setFont(titleFont);
-        add(registerLoginLabel, c);
+        add(loginLabel, c);
+        add(registerLabel, c);
 
-        // Username label
-        usernameTextLabel = new JLabel("Username:");
+        // Username
+        usernameLabel = new JLabel("Username:");
+        usernameLabel.setFont(labelFont);
+        c.gridwidth = 1;
         c.gridx = 0;
         c.gridy = 1;
-        c.gridwidth = 1;
-        add(usernameTextLabel, c);
+        add(usernameLabel, c);
 
-        // Username field
-        usernameTextField = new JTextField(20);
+        usernameField = new JTextField(20);
+        usernameField.setFont(fieldFont);
         c.gridx = 1;
         c.gridy = 1;
-        add(usernameTextField, c);
+        add(usernameField, c);
 
-        // Password label
-        passwordTextLabel = new JLabel("Password:");
+        // Password
+        passwordLabel = new JLabel("Password:");
+        passwordLabel.setFont(labelFont);
         c.gridx = 0;
         c.gridy = 2;
-        add(passwordTextLabel, c);
+        add(passwordLabel, c);
 
-        // Password field
         passwordField = new JPasswordField(20);
+        passwordField.setFont(fieldFont);
         c.gridx = 1;
         c.gridy = 2;
         add(passwordField, c);
 
-        // Main action button
-        registerLoginButton = new JButton("Enter");
+        // Email (Register only)
+        emailLabel = new JLabel("Email:");
+        emailLabel.setFont(labelFont);
         c.gridx = 0;
         c.gridy = 3;
-        c.gridwidth = 2;
-        registerLoginButton.addActionListener(new EnterButton());
-        add(registerLoginButton, c);
+        add(emailLabel, c);
 
-        // Option buttons
-        JPanel buttonPanel = new JPanel();
-        registerChoiceButton = new JButton("Register");
-        loginChoiceButton = new JButton("Login");
-        loginChoiceButton.addActionListener(new LoginButton());
-        registerChoiceButton.addActionListener(new RegisterButton());
-        loginChoiceButton.setEnabled(!operationIsLogin);  // selected
-        registerChoiceButton.setEnabled(operationIsLogin);
-        buttonPanel.add(loginChoiceButton);
-        buttonPanel.add(registerChoiceButton);
+        emailField = new JTextField(20);
+        emailField.setFont(fieldFont);
+        c.gridx = 1;
+        c.gridy = 3;
+        add(emailField, c);
 
+        // Phone (Register only)
+        phoneLabel = new JLabel("Phone:");
+        phoneLabel.setFont(labelFont);
         c.gridx = 0;
         c.gridy = 4;
+        add(phoneLabel, c);
+
+        phoneField = new JTextField(20);
+        phoneField.setFont(fieldFont);
+        c.gridx = 1;
+        c.gridy = 4;
+        add(phoneField, c);
+
+        // Enter button (span 2 cols)
+        enterButton = new JButton("Enter");
+        enterButton.addActionListener(this::onEnter);
+        c.gridx = 0;
+        c.gridy = 5;
         c.gridwidth = 2;
-        add(buttonPanel, c);
+        add(enterButton, c);
+
+        // Mode buttons (Login/Register)
+        JPanel modePanel = new JPanel();
+        loginChoiceButton = new JButton("Login");
+        registerChoiceButton = new JButton("Register");
+        // Passing the sme
+        loginChoiceButton.addActionListener(e -> setMode(true));
+        registerChoiceButton.addActionListener(e -> setMode(false));
+        modePanel.add(loginChoiceButton);
+        modePanel.add(registerChoiceButton);
+
+        c.gridx = 0;
+        c.gridy = 6;
+        c.gridwidth = 2;
+        add(modePanel, c);
+
+        // Start in Login mode (hide email/phone)
+        setMode(true);
     }
 
-    private class LoginButton implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            loginChoiceButton.setEnabled(false);
-            registerChoiceButton.setEnabled(true);
-            operationIsLogin = true;
+
+    private void setMode(boolean isLogin) {
+        operationIsLogin = isLogin;
+
+        // Buttons reflect selection (disabled = selected)
+        loginChoiceButton.setEnabled(!isLogin);
+        registerChoiceButton.setEnabled(isLogin);
+
+        // Show/hide register-only fields
+        emailLabel.setVisible(!isLogin);
+        emailField.setVisible(!isLogin);
+        phoneLabel.setVisible(!isLogin);
+        phoneField.setVisible(!isLogin);
+        loginLabel.setVisible(isLogin);
+        registerLabel.setVisible(!isLogin);
+
+        revalidate(); // re-calculate layout (positions & sizes).
+        repaint(); // redraw (paint) what’s on the screen to show changes.
+    }
+
+
+    private void onEnter(ActionEvent e) {
+        // Store the user input
+        username = usernameField.getText().trim();
+        char[] pw = passwordField.getPassword();
+        password = new String(pw).trim();
+        if (!operationIsLogin) {
+            email = emailField.getText().trim();
+            phoneNumber = phoneField.getText().trim();
         }
-    }
 
-    private class RegisterButton implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            loginChoiceButton.setEnabled(true);
-            registerChoiceButton.setEnabled(false);
-            operationIsLogin = false;
+        // Check if all fields all filled out based on mode
+        if (operationIsLogin && (username.isEmpty() || password.isEmpty())) {
+            JOptionPane.showMessageDialog(this, "Please fill all the fields to login.");
+            return;
         }
-    }
 
-    private class EnterButton implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if (usernameTextField.getText().isEmpty() || passwordField.getPassword().length == 0 || (registerChoiceButton.isEnabled() && loginChoiceButton.isEnabled())) {
-                JOptionPane.showMessageDialog(null, "Please fill out all necessary information.");
-            } else {
-                username = usernameTextField.getText().trim();
-                char[] pw = passwordField.getPassword();
-                password = new String(pw).trim();
-                if (operationIsLogin) {
-                    // TODO Search the users.txt file for matching user and assign the value of authenticated
-                } else {
-                    authenticated = true;
-                    // TODO Add the user to the users.txt file
-                }
-            }
+        if (!operationIsLogin && (username.isEmpty() || password.isEmpty() || email.isEmpty() || phoneNumber.isEmpty())) {
+            JOptionPane.showMessageDialog(this, "Please fill the fields to register.");
+            return;
+        }
+
+        if (operationIsLogin) {
+            // TODO: Check if the user is in the users.txt file and with the correct password
+            // if ok -> proceed; else -> show error
+            JOptionPane.showMessageDialog(this, "(Login) Not implemented yet.");
+        } else {
+            // TODO: Register the user into the users.txt file
+            JOptionPane.showMessageDialog(this, "(Register) Not implemented yet.");
         }
     }
 }
