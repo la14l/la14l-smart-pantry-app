@@ -2,7 +2,6 @@ package main.java.pantryAppPackage;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 
 
 public class LoginPanel extends JPanel {
@@ -25,18 +24,17 @@ public class LoginPanel extends JPanel {
 
     public LoginPanel() {
         // Base layout
-        setLayout(new GridBagLayout());
-        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        GridBagConstraints c = new GridBagConstraints();
-        c.insets = new Insets(10, 10, 10, 10);
-        c.fill = GridBagConstraints.HORIZONTAL;
+        setLayout(new GridBagLayout()); // Using the griBagLayout
+        GridBagConstraints c = new GridBagConstraints(); // Creating a constraint object for element positioning. The elements are centered because anchor equals center by default
+        c.insets = new Insets(10, 10, 10, 10); // Create padding between the components
+        c.fill = GridBagConstraints.HORIZONTAL; // Make the components stretch over their allowed horizontal space
 
         // Fonts (panel-scoped)
         Font labelFont = new Font("SansSerif", Font.BOLD, 16);
         Font fieldFont = new Font("SansSerif", Font.PLAIN, 16);
         Font titleFont = new Font("SansSerif", Font.BOLD, 20);
 
-        // Title (Add one these based on the mode)
+        // Login and Register titles (Add one of these based on the mode)
         loginLabel = new JLabel("Login", SwingConstants.CENTER);
         loginLabel.setFont(titleFont);
 
@@ -45,8 +43,8 @@ public class LoginPanel extends JPanel {
 
         c.gridx = 0;
         c.gridy = 0;
-        c.gridwidth = 2;
-        add(loginLabel, c);
+        c.gridwidth = 2; // Letting the element take the place of two elements horizontally.
+        add(loginLabel, c); // Adding the element to the grid based on the constraints c
         add(registerLabel, c);
 
         // Username
@@ -104,19 +102,20 @@ public class LoginPanel extends JPanel {
 
         // Enter button (span 2 cols)
         enterButton = new JButton("Enter");
-        enterButton.addActionListener(this::onEnter);
+        enterButton.addActionListener(e -> onEnter()); // Using lambda to instantiate anonymous class. Skipping the creation of a class.
         c.gridx = 0;
         c.gridy = 5;
         c.gridwidth = 2;
         add(enterButton, c);
 
         // Mode buttons (Login/Register)
-        JPanel modePanel = new JPanel();
+        JPanel modePanel = new JPanel(); // Making a panel to contain the buttons so they have equal sizes. And not affected by the grid's different column widths at the moment.
         loginChoiceButton = new JButton("Login");
         registerChoiceButton = new JButton("Register");
-        // Passing the sme
+
         loginChoiceButton.addActionListener(e -> setMode(true));
         registerChoiceButton.addActionListener(e -> setMode(false));
+
         modePanel.add(loginChoiceButton);
         modePanel.add(registerChoiceButton);
 
@@ -142,6 +141,8 @@ public class LoginPanel extends JPanel {
         emailField.setVisible(!isLogin);
         phoneLabel.setVisible(!isLogin);
         phoneField.setVisible(!isLogin);
+
+        // Displaying the right title based on the mode
         loginLabel.setVisible(isLogin);
         registerLabel.setVisible(!isLogin);
 
@@ -150,7 +151,7 @@ public class LoginPanel extends JPanel {
     }
 
 
-    private void onEnter(ActionEvent e) {
+    private void onEnter() {
         // Store the user input
         username = usernameField.getText().trim();
         char[] pw = passwordField.getPassword();
@@ -171,6 +172,7 @@ public class LoginPanel extends JPanel {
             return;
         }
 
+        // Do action based on mode
         if (operationIsLogin) {
             // TODO: Check if the user is in the users.txt file and with the correct password
             // if ok -> proceed; else -> show error
