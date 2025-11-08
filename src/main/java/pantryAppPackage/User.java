@@ -1,7 +1,7 @@
 package pantryAppPackage;
 
 public class User {
-    String name, email, phone, password, ID;
+    private String name, email, phone, password, ID;
 
     // Default constructor
     public User() {}
@@ -16,18 +16,21 @@ public class User {
     }
 
     // Registers users using name, email, phone, password, and an auto-generated ID
-    public void register(String n, String e, String ph, String pw) {
+    public boolean register(String n, String e, String ph, String pw) {
         // To do
+        return true;
     }
 
     // Logs in users based on name, email, phone, password
-    public void login(String n, String e, String ph, String pw) {
+    public boolean login(String n, String e, String ph, String pw) {
         // To do
+        return true;
     }
 
     // Logs out of the current User based on ID
-    public void logout(String id) {
+    public boolean logout(String id) {
         // To do
+        return true;
     }
 
 
@@ -38,10 +41,10 @@ public class User {
     public String getPassword() {return password;}
     public String getID() {return ID;}
     // Setters
-    public void setName(String n) {name = n;}
-    public void setEmail(String e) {email = e;}
-    public void setPhone(String ph) {phone = ph;}
-    public void setPassword(String pw) {password = pw;}
-    public void setID(String id) {ID = id;}
+    public void setName(String n) {this.name = n;}
+    public void setEmail(String e) {this.email = e;}
+    public void setPhone(String ph) {this.phone = ph;}
+    public void setPassword(String pw) {this.password = pw;}
+    public void setID(String id) {this.ID = id;}
 
 }
