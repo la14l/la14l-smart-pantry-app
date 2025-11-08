@@ -1,4 +1,4 @@
-package main.java.pantryAppPackage;
+package pantryAppPackage;
 
 public class User {
 }
