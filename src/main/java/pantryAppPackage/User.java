@@ -22,7 +22,9 @@ public class User {
     }
 
     // Logs in users based on name, email, phone, password
-    public boolean login(String n, String e, String ph, String pw) {
+    // Temporarily only requires email and password, the choice between logging in with
+    // either the email or phone should be added
+    public boolean login(String e, String pw) {
         // To do
         return true;
     }
