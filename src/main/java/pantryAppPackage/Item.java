@@ -2,7 +2,7 @@ package pantryAppPackage;
 
 public class Item {
   //attributes
-  private String Item_ID,Item_Name,Item_Category,Item_Expdate,Item_Unit; 
+  private String Item_ID,Item_Name,Item_Category,Item_ExpDate,Item_Unit; 
   private int Item_Quantity,Item_Threshold;
 
 public Item(){} //default constructor 
