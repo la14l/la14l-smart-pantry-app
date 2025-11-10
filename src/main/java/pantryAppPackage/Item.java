@@ -59,18 +59,18 @@ this.Item_Expdate= expd;
     return this.Item_ID;
   }
   
-//method to check if item is low in stock (
+//method to check if item is low in stock 
   public boolean isLowStock(){
 //if quantity<threshold return true else false 
-    //lina u have to check that the quantities and threshold is not <0 and if its 0 then its not low in stock
+    //lina u have to check that the quantities and threshold is not <0 and if its 0 then its not low in stock +check if we need an interface
   }
-  //method to check if an item is about to expire if less than 15 days (lina u have to use search)
+  //method to check if an item is about to expire 
   public boolean isAboutToExpire(){
-    /*lina if the item doesnt have expiry date then it should return false 
+    //if the item doesnt have expiry date then it should return false 
     //find the number of days between today and the expiry date 
     // if daysleft <=15 and daysleft>=0 then its about to expire 
     //if daysleft<0 then its already expired 
-    //if daysleft>15 then not close to expiry*/
+    //if daysleft>15 then not close to expiry
   }
 
 
