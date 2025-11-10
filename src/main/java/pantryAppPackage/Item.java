@@ -15,7 +15,7 @@ this.Item_Category= category;
 this.Item_Quantity= quantity;
 this.Item_Unit= unit;
 this.Item_Threshold= threshold;
-this.Item_Expdate= expd;
+this.Item_ExpDate= expd;
 }
   //setters and getters
   public void setItem_Name(String name){
