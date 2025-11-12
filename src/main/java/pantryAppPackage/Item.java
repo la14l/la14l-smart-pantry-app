@@ -61,12 +61,31 @@ this.Item_ExpDate= expd;
   
 //method to check if item is low in stock 
   public boolean isLowStock(){
-//if quantity<threshold return true else false 
-    //lina u have to check that the quantities and threshold is not <0 and if its 0 then its not low in stock +check if we need an interface
+    //if the threshold is negative its invalid
+    if(Item_Threshold<0){
+      System.out.print("Item threshold cannot be negative")
+       return false;
+       }
+    //a negative quantity of an item is treated as a low in stock item
+    if(Item_Quantity<0){
+      return true;
+    }
+    //when item quantity is less than threshold then item is low in stock 
+    if(Item_Quantity<Item_Threshold){
+      return true;
+    }
+    //otherwise its not low in stock
+    return false; 
   }
+  
   //method to check if an item is about to expire 
-  public boolean isAboutToExpire(){
+  /*public boolean isAboutToExpire(){
     //if the item doesnt have expiry date then it should return false 
+    if(Item_ExpDate.equals("")){
+      return false;
+    }*/
+    //int Days_left=(int) Todays_Date - Item_ExpDate;
+
     //find the number of days between today and the expiry date 
     // if daysleft <=15 and daysleft>=0 then its about to expire 
     //if daysleft<0 then its already expired 
