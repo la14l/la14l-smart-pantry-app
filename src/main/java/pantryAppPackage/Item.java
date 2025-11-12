@@ -63,7 +63,7 @@ this.Item_ExpDate= expd;
   public boolean isLowStock(){
     //if the threshold is negative its invalid
     if(Item_Threshold<0){
-      System.out.print("Item threshold cannot be negative")
+      System.out.print("Item threshold cannot be negative");
        return false;
        }
     //a negative quantity of an item is treated as a low in stock item
@@ -79,12 +79,19 @@ this.Item_ExpDate= expd;
   }
   
   //method to check if an item is about to expire 
-  /*public boolean isAboutToExpire(){
+  public boolean isAboutToExpire(){
     //if the item doesnt have expiry date then it should return false 
-    if(Item_ExpDate.equals("")){
+    if(Item_ExpDate.equals("")||Item_ExpDate==null){
       return false;
-    }*/
-    //int Days_left=(int) Todays_Date - Item_ExpDate;
+    }
+    //the number of days between todays date and the expiry date 
+    //asking user for todays date
+    Scanner inputDate =new Scanner(System.in);
+    System.out.print("Enter today's date please (Y/M/D):");
+    String TodaysDate= inputDate.nextLine();
+    String[] dateparts=TodaysDate.split(“ /”);
+    //lina get the date year and month and then parse them to int 
+
 
     //find the number of days between today and the expiry date 
     // if daysleft <=15 and daysleft>=0 then its about to expire 
