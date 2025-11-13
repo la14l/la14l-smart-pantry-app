@@ -29,7 +29,7 @@ public class AuthService {
 
     public boolean login(String email, String password) {
         User user = findByEmail(email); // Look for the user by email. Null if DNE.
-        if (currentUser == null && user != null && password.equals(user.getPassword())) {
+        if (user != null && password.equals(user.getPassword())) {
             currentUser = user;
             return true;
         }
@@ -75,7 +75,7 @@ public class AuthService {
                 String line = br.readLine();
                 while (line != null) {
                     // Format: id,name,email,phone,password
-                    String[] t = line.split(","); // Split the line into the data
+                    String[] t = line.split("\\|"); // Split the line into the data
                     users.add(new User(t[0], t[1], t[2], t[3], t[4])); // Create an anonymous object of User and add it to the user's list.
                     line = br.readLine();
                 }
@@ -88,7 +88,7 @@ public class AuthService {
     private void saveUsers() {
         try (BufferedWriter bw = Files.newBufferedWriter(usersFile)) { // Automatically closes bw
             for (User u : users) {
-                bw.write(String.join(",", u.getID(), u.getName(), u.getEmail(), u.getPhone(), u.getPassword()));
+                bw.write(String.join("|", u.getID(), u.getName(), u.getEmail(), u.getPhone(), u.getPassword()));
                 bw.newLine();
             }
         } catch (IOException e) {
