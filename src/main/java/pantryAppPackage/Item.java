@@ -87,7 +87,10 @@ this.Item_ExpDate= expd;
     //asking user for todays date
     //Scanner inputDate =new Scanner(System.in);
     //System.out.print("Enter today's date please (Y/M/D):");
-   // String TodaysDate= inputDate.nextLine();
+    //String Todays_Date= inputDate.nextLine();
+    //System.out.print("Enter expiry date (Y/M/D): ");   
+    //String expDate = input.nextLine();
+    
     //user must enter date in correct format 
     if(Todays_Date.length() != 10||Item_ExpDate.length()!= 10){
       System.out.print("Enter correct date format YYYY/MM/DD");
