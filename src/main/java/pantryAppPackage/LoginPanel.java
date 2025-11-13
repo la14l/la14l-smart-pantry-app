@@ -157,7 +157,7 @@ public class LoginPanel extends JPanel {
         char[] pw = passwordField.getPassword();
         password = new String(pw).trim();
         if (!operationIsLogin) {
-            email = emailField.getText().trim();
+            email = emailField.getText().trim().toLowerCase();
             phoneNumber = phoneField.getText().trim();
         }
 
@@ -169,6 +169,26 @@ public class LoginPanel extends JPanel {
 
         if (!operationIsLogin && (username.isEmpty() || password.isEmpty() || email.isEmpty() || phoneNumber.isEmpty())) {
             JOptionPane.showMessageDialog(this, "Please fill the fields to register.");
+            return;
+        }
+
+        // Checks if the email is valid.
+        if (!operationIsLogin && !email.contains("@")) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid email.");
+            return;
+        }
+
+        // Checks if the password is long enough
+        if (password.length() < 4) {
+            JOptionPane.showMessageDialog(this, "The password is too short.");
+            return;
+        }
+
+        // Checks if the phone number is an integer and therefore a valid phone number (simplified checking method).
+        try {
+            Integer.parseInt(phoneNumber);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid phone number.");
             return;
         }
 
