@@ -79,26 +79,63 @@ this.Item_ExpDate= expd;
   }
   
   //method to check if an item is about to expire 
-  public boolean isAboutToExpire(){
+  public boolean isAboutToExpire(String Todays_Date){
     //if the item doesnt have expiry date then it should return false 
     if(Item_ExpDate.equals("")||Item_ExpDate==null){
       return false;
     }
-    //the number of days between todays date and the expiry date 
     //asking user for todays date
-    Scanner inputDate =new Scanner(System.in);
-    System.out.print("Enter today's date please (Y/M/D):");
-    String TodaysDate= inputDate.nextLine();
-    String[] dateparts=TodaysDate.split(“ /”);
-    //lina get the date year and month and then parse them to int 
-
-
-    //find the number of days between today and the expiry date 
-    // if daysleft <=15 and daysleft>=0 then its about to expire 
-    //if daysleft<0 then its already expired 
-    //if daysleft>15 then not close to expiry
+    //Scanner inputDate =new Scanner(System.in);
+    //System.out.print("Enter today's date please (Y/M/D):");
+   // String TodaysDate= inputDate.nextLine();
+    //user must enter date in correct format 
+    if(Todays_Date.length() != 10||Item_ExpDate.length()!= 10){
+      System.out.print("Enter correct date format YYYY/MM/DD");
+      return false;
+    }
+    
+    //splitting the expiry date and todays date from user output
+    String[] todayParts = Todays_Date.split("/");
+    String[] expParts = Item_ExpDate.split("/");
+    
+    //getting each part of the date from the string 
+    //parsing each string into integer for calculation
+    int tYear = Integer.parseInt(todayParts[0]);
+    int tMonth = Integer.parseInt(todayParts[1]);
+    int tDay = Integer.parseInt(todayParts[2]);
+    int eYear = Integer.parseInt(expParts[0]);
+    int eMonth = Integer.parseInt(expParts[1]);
+    int eDay = Integer.parseInt(expParts[2]);
+    
+    //difference in dates 
+    //first case is if the items are made in the same year
+    if (eYear==tYear){
+      //check if they're in the same month
+       if(eMonth==tMonth){
+         int daysLeft=eDay-tDay;
+         //if the daysleft between 0 and 15 then its about to expire
+         if(daysLeft>=0 && daysLeft<=15){
+           return true;
+         }
+       }
+      //items in the same month 
+      else if(eMonth==tMonth+1){
+        int daysLeft=(30-tDay)+eDay;
+        if(daysLeft<=15){
+          return true;
+        }
+      }
+    }
+    return false;
   }
+         
+         /*if(Daysleft<0){
+           System.out.print("already expired");
+           return false;*/
+  
+  
+}  
+       
 
 
   
-}
