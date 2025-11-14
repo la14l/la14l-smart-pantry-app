@@ -7,10 +7,10 @@ import java.awt.event.ActionListener;
 
 public class DashboardSidebar extends JPanel {
 
-    private JButton inventoryMenuBtn;
+    private JButton pantryMenuBtn;
     private JButton shoppingMenuBtn;
     private JLabel profile;
-    private String selectedMenu;    // INVENTORY or SHOPPING
+    private String selectedMenu;    // PANTRY or SHOPPING
 
     DashboardSidebar (String username) {
 
@@ -22,29 +22,29 @@ public class DashboardSidebar extends JPanel {
         logo.setHorizontalAlignment(SwingConstants.CENTER);
         logo.setMaximumSize(new Dimension(Integer.MAX_VALUE, logo.getPreferredSize().height));
 
-        inventoryMenuBtn = new JButton("Inventory");
+        pantryMenuBtn = new JButton("Pantry");
         shoppingMenuBtn = new JButton("Shopping");
 
         // Enabling the buttons to take the full width of the sidebar
-        inventoryMenuBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, inventoryMenuBtn.getPreferredSize().height));
+        pantryMenuBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, pantryMenuBtn.getPreferredSize().height));
         shoppingMenuBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, shoppingMenuBtn.getPreferredSize().height));
 
         profile = new JLabel(username);
 
         add(logo);
         add(Box.createRigidArea(new Dimension(0, 20)));
-        add(inventoryMenuBtn);
+        add(pantryMenuBtn);
         add(Box.createRigidArea(new Dimension(0, 5)));
         add(shoppingMenuBtn);
         add(Box.createVerticalGlue());
         add(profile);
 
-        selectedMenu = "INVENTORY";
+        selectedMenu = "PANTRY";
 
-        inventoryMenuBtn.setEnabled(false);
+        pantryMenuBtn.setEnabled(false);
 
         MenuBtnEventHandler menuBtnEventHandler = new MenuBtnEventHandler();
-        inventoryMenuBtn.addActionListener(menuBtnEventHandler);
+        pantryMenuBtn.addActionListener(menuBtnEventHandler);
         shoppingMenuBtn.addActionListener(menuBtnEventHandler);
     }
 
@@ -52,14 +52,14 @@ public class DashboardSidebar extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (selectedMenu.equals("INVENTORY")) {
-                inventoryMenuBtn.setEnabled(true);
+            if (selectedMenu.equals("PANTRY")) {
+                pantryMenuBtn.setEnabled(true);
                 shoppingMenuBtn.setEnabled(false);
                 selectedMenu = "SHOPPING";
             } else {
-                inventoryMenuBtn.setEnabled(false);
+                pantryMenuBtn.setEnabled(false);
                 shoppingMenuBtn.setEnabled(true);
-                selectedMenu = "INVENTORY";
+                selectedMenu = "PANTRY";
             }
 
         }
