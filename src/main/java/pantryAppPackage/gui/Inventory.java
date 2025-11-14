@@ -87,17 +87,29 @@ public class Inventory extends JPanel {
 
         JButton editItemBtn = new JButton("Edit");
         JButton saveChangesBtn = new JButton("Save Changes");
+        JButton restockBtn = new JButton("Restock");
+        JButton consumeBtn = new JButton("Consume");
         JButton deleteItemBtn = new JButton("Delete");
 
         editItemBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, editItemBtn.getPreferredSize().height));
         saveChangesBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, saveChangesBtn.getPreferredSize().height));
+        restockBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, saveChangesBtn.getPreferredSize().height));
+        consumeBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, saveChangesBtn.getPreferredSize().height));
         deleteItemBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, deleteItemBtn.getPreferredSize().height));
 
+        editItemBtn.setEnabled(false);
         saveChangesBtn.setEnabled(false);
+        restockBtn.setEnabled(false);
+        consumeBtn.setEnabled(false);
+        deleteItemBtn.setEnabled(false);
 
         buttonsPane.add(editItemBtn);
         buttonsPane.add(Box.createRigidArea(new Dimension(0, 5)));
         buttonsPane.add(saveChangesBtn);
+        buttonsPane.add(Box.createRigidArea(new Dimension(0, 10)));
+        buttonsPane.add(restockBtn);
+        buttonsPane.add(Box.createRigidArea(new Dimension(0, 5)));
+        buttonsPane.add(consumeBtn);
         buttonsPane.add(Box.createVerticalGlue());
         buttonsPane.add(deleteItemBtn);
 
@@ -116,6 +128,24 @@ public class Inventory extends JPanel {
             saveChangesBtn.setEnabled(false);
         });
 
+        restockBtn.addActionListener(e -> {
+            int row = table.getSelectedRow();
+            if (row != -1) {
+                int qty = Integer.parseInt(table.getValueAt(row, 3).toString());
+                qty += 1;
+                table.setValueAt(qty, row, 3);
+            }
+        });
+
+        consumeBtn.addActionListener(e -> {
+            int row = table.getSelectedRow();
+            if (row != -1) {
+                int qty = Integer.parseInt(table.getValueAt(row, 3).toString());
+                qty -= 1;
+                table.setValueAt(qty, row, 3);
+            }
+        });
+
         deleteItemBtn.addActionListener(e -> {
             int row = table.getSelectedRow();
             if (row != -1) {
@@ -124,6 +154,14 @@ public class Inventory extends JPanel {
 
         });
         // ------------ BUTTON PANE (End) ------------
+
+        table.getSelectionModel().addListSelectionListener(e -> {
+            boolean rowSelected = table.getSelectedRow() != -1;
+            editItemBtn.setEnabled(rowSelected);
+            restockBtn.setEnabled(rowSelected);
+            consumeBtn.setEnabled(rowSelected);
+            deleteItemBtn.setEnabled(rowSelected);
+        });
 
         add(scrollPane);
         add(Box.createRigidArea(new Dimension(10, 0)));
