@@ -7,12 +7,12 @@ public class User {
     public User() {}
 
     // Full constructor
-    public User(String n, String e, String ph, String pw, String id) {
-        name = n;
-        email = e;
-        phone = ph;
-        password = pw;
-        ID = id;
+    public User(String ID, String name, String email, String phone, String password) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.password = password;
+        this.ID = ID;
     }
 
     // Registers users using name, email, phone, password, and an auto-generated ID

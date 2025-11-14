@@ -3,7 +3,7 @@ package pantryAppPackage;
 import javax.swing.*;
 
 public class MainFrame extends JFrame {
-    public MainFrame() {
+    public MainFrame(AuthService authService) {
         // Set frame title
         setTitle("Smart Pantry Inventory System");
         // Set frame size
@@ -14,7 +14,7 @@ public class MainFrame extends JFrame {
         setLocationRelativeTo(null);
 
         // Set the content of the JFrame to the content of LoginPanel. This is how to have different panels for the project (Login, Dashboard, ...)
-        setContentPane(new LoginPanel());
+        setContentPane(new LoginPanel(authService));
         // Set the JFrame visible
         setVisible(true);
     }

@@ -3,13 +3,13 @@ package pantryAppPackage;
 import javax.swing.*;
 import java.awt.*;
 
-
 public class LoginPanel extends JPanel {
+    private final AuthService authService;
     // Labels
-    JLabel loginLabel, registerLabel, usernameLabel, passwordLabel, emailLabel, phoneLabel;
+    JLabel loginLabel, registerLabel, nameLabel, passwordLabel, emailLabel, phoneLabel;
 
     // Inputs
-    JTextField usernameField, emailField, phoneField;
+    JTextField nameField, emailField, phoneField;
     JPasswordField passwordField;
 
     // Buttons
@@ -17,17 +17,18 @@ public class LoginPanel extends JPanel {
 
     // Values
     boolean operationIsLogin = true;
-    String username;
+    String name;
     String password;
     String phoneNumber;
     String email;
 
-    public LoginPanel() {
+    public LoginPanel(AuthService authService) {
         // Base layout
         setLayout(new GridBagLayout()); // Using the griBagLayout
         GridBagConstraints c = new GridBagConstraints(); // Creating a constraint object for element positioning. The elements are centered because anchor equals center by default
         c.insets = new Insets(10, 10, 10, 10); // Create padding between the components
         c.fill = GridBagConstraints.HORIZONTAL; // Make the components stretch over their allowed horizontal space
+        this.authService = authService;
 
         // Fonts (panel-scoped)
         Font labelFont = new Font("SansSerif", Font.BOLD, 16);
@@ -47,45 +48,45 @@ public class LoginPanel extends JPanel {
         add(loginLabel, c); // Adding the element to the grid based on the constraints c
         add(registerLabel, c);
 
-        // Username
-        usernameLabel = new JLabel("Username:");
-        usernameLabel.setFont(labelFont);
+        // Email
+        emailLabel = new JLabel("Email:");
+        emailLabel.setFont(labelFont);
         c.gridwidth = 1;
         c.gridx = 0;
         c.gridy = 1;
-        add(usernameLabel, c);
-
-        usernameField = new JTextField(20);
-        usernameField.setFont(fieldFont);
-        c.gridx = 1;
-        c.gridy = 1;
-        add(usernameField, c);
-
-        // Password
-        passwordLabel = new JLabel("Password:");
-        passwordLabel.setFont(labelFont);
-        c.gridx = 0;
-        c.gridy = 2;
-        add(passwordLabel, c);
-
-        passwordField = new JPasswordField(20);
-        passwordField.setFont(fieldFont);
-        c.gridx = 1;
-        c.gridy = 2;
-        add(passwordField, c);
-
-        // Email (Register only)
-        emailLabel = new JLabel("Email:");
-        emailLabel.setFont(labelFont);
-        c.gridx = 0;
-        c.gridy = 3;
         add(emailLabel, c);
 
         emailField = new JTextField(20);
         emailField.setFont(fieldFont);
         c.gridx = 1;
-        c.gridy = 3;
+        c.gridy = 1;
         add(emailField, c);
+
+        // Name (Register only)
+        nameLabel = new JLabel("Name:");
+        nameLabel.setFont(labelFont);
+        c.gridx = 0;
+        c.gridy = 2;
+        add(nameLabel, c);
+
+        nameField = new JTextField(20);
+        nameField.setFont(fieldFont);
+        c.gridx = 1;
+        c.gridy = 2;
+        add(nameField, c);
+
+        // Password
+        passwordLabel = new JLabel("Password:");
+        passwordLabel.setFont(labelFont);
+        c.gridx = 0;
+        c.gridy = 3;
+        add(passwordLabel, c);
+
+        passwordField = new JPasswordField(20);
+        passwordField.setFont(fieldFont);
+        c.gridx = 1;
+        c.gridy = 3;
+        add(passwordField, c);
 
         // Phone (Register only)
         phoneLabel = new JLabel("Phone:");
@@ -137,8 +138,8 @@ public class LoginPanel extends JPanel {
         registerChoiceButton.setEnabled(isLogin);
 
         // Show/hide register-only fields
-        emailLabel.setVisible(!isLogin);
-        emailField.setVisible(!isLogin);
+        nameLabel.setVisible(!isLogin);
+        nameField.setVisible(!isLogin);
         phoneLabel.setVisible(!isLogin);
         phoneField.setVisible(!isLogin);
 
@@ -153,33 +154,77 @@ public class LoginPanel extends JPanel {
 
     private void onEnter() {
         // Store the user input
-        username = usernameField.getText().trim();
+        email = emailField.getText().trim().toLowerCase();
         char[] pw = passwordField.getPassword();
         password = new String(pw).trim();
         if (!operationIsLogin) {
-            email = emailField.getText().trim();
+            name = nameField.getText().trim();
             phoneNumber = phoneField.getText().trim();
         }
 
-        // Check if all fields all filled out based on mode
-        if (operationIsLogin && (username.isEmpty() || password.isEmpty())) {
-            JOptionPane.showMessageDialog(this, "Please fill all the fields to login.");
-            return;
-        }
+        if (isValidInput()) {
+            // Do action based on mode
+            if (operationIsLogin) {
+                if (authService.login(email, password)) {
+                    System.out.println("Login successful");
+                    // TODO: Proceed to the dashboard
+                } else {
+                    JOptionPane.showMessageDialog(this, "Please check your email or password.");
+                }
 
-        if (!operationIsLogin && (username.isEmpty() || password.isEmpty() || email.isEmpty() || phoneNumber.isEmpty())) {
-            JOptionPane.showMessageDialog(this, "Please fill the fields to register.");
-            return;
+            } else {
+                try {
+                    authService.register(name, email, phoneNumber, password);
+                } catch (IllegalStateException e) {
+                    JOptionPane.showMessageDialog(this, "Your email is already registered, consider logging in.");
+                    setMode(true);
+                    return;
+                }
+                System.out.println("Registration successful");
+                // TODO: Proceed to the dashboard
+            }
         }
+    }
 
-        // Do action based on mode
+    private boolean isValidInput() {
         if (operationIsLogin) {
-            // TODO: Check if the user is in the users.txt file and with the correct password
-            // if ok -> proceed; else -> show error
-            JOptionPane.showMessageDialog(this, "(Login) Not implemented yet.");
-        } else {
-            // TODO: Register the user into the users.txt file
-            JOptionPane.showMessageDialog(this, "(Register) Not implemented yet.");
+            // Check if all fields all filled out if login
+            if ((email.isEmpty() || password.isEmpty())) {
+                JOptionPane.showMessageDialog(this, "Please fill all the fields to login.");
+                return false;
+            }
+            // Checks if the email is valid.
+            if (!email.contains("@")) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid email.");
+                return false;
+            }
         }
+
+
+        if (!operationIsLogin) {
+            // Check if all fields all filled out if registration
+            if ((name.isEmpty() || password.isEmpty() || email.isEmpty() || phoneNumber.isEmpty())) {
+                JOptionPane.showMessageDialog(this, "Please fill the fields to register.");
+                return false;
+            }
+
+            // Checks if the phone number is an integer and therefore a valid phone number (simplified checking method).
+            try {
+                Integer.parseInt(phoneNumber);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid phone number.");
+                return false;
+            }
+        }
+
+
+        // Checks if the password is long enough
+        if (password.length() < 4) {
+            JOptionPane.showMessageDialog(this, "The password is too short.");
+            return false;
+        }
+
+
+        return true;
     }
 }
