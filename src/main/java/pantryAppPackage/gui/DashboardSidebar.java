@@ -48,6 +48,9 @@ public class DashboardSidebar extends JPanel {
         shoppingMenuBtn.addActionListener(menuBtnEventHandler);
     }
 
+    public JButton getPantryMenuBtn() {return pantryMenuBtn;}
+    public JButton getShoppingMenuBtn() {return shoppingMenuBtn;}
+
     private class MenuBtnEventHandler implements ActionListener {
 
         @Override
