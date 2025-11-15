@@ -2,12 +2,15 @@ package pantryAppPackage.gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class DashboardSidebar extends JPanel {
 
     private JButton pantryMenuBtn;
     private JButton shoppingMenuBtn;
     private JLabel profile;
+    private String selectedMenu;    // PANTRY or SHOPPING
 
     DashboardSidebar (String username) {
 
@@ -36,10 +39,31 @@ public class DashboardSidebar extends JPanel {
         add(Box.createVerticalGlue());
         add(profile);
 
+        selectedMenu = "PANTRY";
+
+        pantryMenuBtn.setEnabled(false);
+
+        MenuBtnEventHandler menuBtnEventHandler = new MenuBtnEventHandler();
+        pantryMenuBtn.addActionListener(menuBtnEventHandler);
+        shoppingMenuBtn.addActionListener(menuBtnEventHandler);
     }
 
-    public JButton getPantryMenuBtn() {return pantryMenuBtn;}
-    public JButton getShoppingMenuBtn() {return shoppingMenuBtn;}
+    private class MenuBtnEventHandler implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (selectedMenu.equals("PANTRY")) {
+                pantryMenuBtn.setEnabled(true);
+                shoppingMenuBtn.setEnabled(false);
+                selectedMenu = "SHOPPING";
+            } else {
+                pantryMenuBtn.setEnabled(false);
+                shoppingMenuBtn.setEnabled(true);
+                selectedMenu = "PANTRY";
+            }
+
+        }
+    }
 
     // TEST - REMOVE LATER
     public static void main(String[] args) {

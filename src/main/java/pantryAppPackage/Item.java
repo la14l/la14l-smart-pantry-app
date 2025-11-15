@@ -122,7 +122,7 @@ public class Item {
                 //if the days left between 0 and 15, then its about to expire
                 return daysLeft >= 0 && daysLeft <= 15;
             }
-            //items in different months but could still have a 15 day difference 
+            //items in different months but could still have a 15 day difference
             else if (eMonth == tMonth + 1) {
                 int daysLeft = (30 - tDay) + eDay;
                 return daysLeft <= 15;
@@ -135,7 +135,7 @@ public class Item {
            System.out.print("already expired");
            return false;*/
 }
-       
+
 
 
 
