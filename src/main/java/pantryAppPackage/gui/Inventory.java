@@ -172,11 +172,12 @@ public class Inventory extends JPanel {
         if (text.isEmpty()) {
             activeFilters.set(0, null);
         } else {
+            // (?i) ignore case in regex
             if (col.equals("Name")) {
-                activeFilters.set(0, RowFilter.regexFilter(text, 1));
+                activeFilters.set(0, RowFilter.regexFilter("(?i)"+text, 1));
             }
             else if (col.equals("Category")) {
-                activeFilters.set(0, RowFilter.regexFilter(text, 2));
+                activeFilters.set(0, RowFilter.regexFilter("(?i)"+text, 2));
             }
         }
 
