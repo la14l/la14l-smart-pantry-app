@@ -211,14 +211,4 @@ public class Inventory extends JPanel {
         sorter.setRowFilter(nonNullFilters.isEmpty() ? null : RowFilter.andFilter(nonNullFilters));
 
     }
-
-    // TEST - REMOVE LATER
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Inventory");
-        frame.add(new Inventory());
-        frame.pack();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-
-    }
 }

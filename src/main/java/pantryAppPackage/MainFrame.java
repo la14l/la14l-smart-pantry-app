@@ -1,9 +1,13 @@
 package pantryAppPackage;
 
+import pantryAppPackage.gui.Dashboard;
+
 import javax.swing.*;
 
-public class MainFrame extends JFrame {
-    public MainFrame(AuthService authService) {
+public class MainFrame extends JFrame implements PanelSwitchable{
+
+
+    public MainFrame() {
         // Set frame title
         setTitle("Smart Pantry Inventory System");
         // Set frame size
@@ -13,9 +17,26 @@ public class MainFrame extends JFrame {
         // Center the frame on the screen.
         setLocationRelativeTo(null);
 
-        // Set the content of the JFrame to the content of LoginPanel. This is how to have different panels for the project (Login, Dashboard, ...)
-        setContentPane(new LoginPanel(authService));
         // Set the JFrame visible
         setVisible(true);
+
+        // Start by showing the login page
+        showLogin();
+    }
+
+    @Override
+    public void showDashboard(User user) {
+        Dashboard dash = new Dashboard(user, this);
+        setContentPane(dash);
+        revalidate();
+        repaint();
+    }
+
+    @Override
+    public void showLogin() {
+        LoginPanel login = new LoginPanel(this);
+        setContentPane(login);
+        revalidate();
+        repaint();
     }
 }
