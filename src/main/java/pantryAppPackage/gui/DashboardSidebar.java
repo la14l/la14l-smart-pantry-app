@@ -7,6 +7,7 @@ public class DashboardSidebar extends JPanel {
 
     private JButton pantryMenuBtn;
     private JButton shoppingMenuBtn;
+    private JButton logoutMenuBtn;
     private JLabel profile;
 
     DashboardSidebar (String username) {
@@ -21,10 +22,12 @@ public class DashboardSidebar extends JPanel {
 
         pantryMenuBtn = new JButton("Pantry");
         shoppingMenuBtn = new JButton("Shopping");
+        logoutMenuBtn = new JButton("Logout");
 
         // Enabling the buttons to take the full width of the sidebar
         pantryMenuBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, pantryMenuBtn.getPreferredSize().height));
         shoppingMenuBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, shoppingMenuBtn.getPreferredSize().height));
+        logoutMenuBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, shoppingMenuBtn.getPreferredSize().height));
 
         profile = new JLabel(username);
 
@@ -34,12 +37,15 @@ public class DashboardSidebar extends JPanel {
         add(Box.createRigidArea(new Dimension(0, 5)));
         add(shoppingMenuBtn);
         add(Box.createVerticalGlue());
+        add(logoutMenuBtn);
+        add(Box.createRigidArea(new Dimension(0, 20)));
         add(profile);
 
     }
 
     public JButton getPantryMenuBtn() {return pantryMenuBtn;}
     public JButton getShoppingMenuBtn() {return shoppingMenuBtn;}
+    public JButton getLogoutMenuBtn() {return  logoutMenuBtn;}
 
     // TEST - REMOVE LATER
     public static void main(String[] args) {
