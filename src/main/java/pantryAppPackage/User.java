@@ -7,33 +7,34 @@ public class User {
     public User() {}
 
     // Full constructor
-    public User(String n, String e, String ph, String pw, String id) {
-        name = n;
-        email = e;
-        phone = ph;
-        password = pw;
-        ID = id;
+    public User(String ID, String name, String email, String phone, String password) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.password = password;
+        this.ID = ID;
     }
 
-    // Registers users using name, email, phone, password, and an auto-generated ID
-    public boolean register(String n, String e, String ph, String pw) {
-        // To do
-        return true;
-    }
-
-    // Logs in users based on name, email, phone, password
-    // Temporarily only requires email and password, the choice between logging in with
-    // either the email or phone should be added
-    public boolean login(String e, String pw) {
-        // To do
-        return true;
-    }
-
-    // Logs out of the current User based on ID
-    public boolean logout(String id) {
-        // To do
-        return true;
-    }
+    // Handled by AuthServices
+//    // Registers users using name, email, phone, password, and an auto-generated ID
+//    public boolean register(String n, String e, String ph, String pw) {
+//        // To do
+//        return true;
+//    }
+//
+//    // Logs in users based on name, email, phone, password
+//    // Temporarily only requires email and password, the choice between logging in with
+//    // either the email or phone should be added
+//    public boolean login(String e, String pw) {
+//        // To do
+//        return true;
+//    }
+//
+//    // Logs out of the current User based on ID
+//    public boolean logout(String id) {
+//        // To do
+//        return true;
+//    }
 
 
     // Getters
