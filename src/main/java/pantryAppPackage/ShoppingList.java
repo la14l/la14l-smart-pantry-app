@@ -70,7 +70,7 @@ public class ShoppingList {
                 bw.newLine();
             }
         } catch (IOException e) {
-            throw new RuntimeException("Failed to save users.txt", e);
+            throw new RuntimeException("Failed to save shopping_lists.txt", e);
         }
     } // reuse code from AuthServices to update txt database
 
