@@ -8,7 +8,7 @@ import java.io.FileNotFoundException;
 public class MainFrame extends JFrame implements PanelSwitchable {
 
 
-    public MainFrame() throws FileNotFoundException {
+    public MainFrame() {
         // Set frame title
         setTitle("Smart Pantry Inventory System");
         // Set frame size
@@ -39,7 +39,7 @@ public class MainFrame extends JFrame implements PanelSwitchable {
     }
 
     @Override
-    public void showLogin() throws FileNotFoundException {
+    public void showLogin() {
         LoginPanel login = new LoginPanel(this);
         setContentPane(login);
         revalidate();

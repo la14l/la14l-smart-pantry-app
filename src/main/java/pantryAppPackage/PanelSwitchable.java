@@ -6,6 +6,6 @@ public interface PanelSwitchable {
 
     void showDashboard(User user) throws FileNotFoundException;
 
-    void showLogin() throws FileNotFoundException;
+    void showLogin();
 
 }
