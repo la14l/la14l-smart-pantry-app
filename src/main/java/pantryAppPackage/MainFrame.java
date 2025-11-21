@@ -3,11 +3,12 @@ package pantryAppPackage;
 import pantryAppPackage.gui.Dashboard;
 
 import javax.swing.*;
+import java.io.FileNotFoundException;
 
 public class MainFrame extends JFrame implements PanelSwitchable {
 
 
-    public MainFrame() {
+    public MainFrame() throws FileNotFoundException {
         // Set frame title
         setTitle("Smart Pantry Inventory System");
         // Set frame size
@@ -25,15 +26,20 @@ public class MainFrame extends JFrame implements PanelSwitchable {
     }
 
     @Override
-    public void showDashboard(User user) {
-        Dashboard dash = new Dashboard(user, this);
+    public void showDashboard(User user) throws FileNotFoundException {
+
+        // Populate the inventory data into the GUI
+        String[][] inventoryData = DashboardBackend.readTableDataFromFile("src/main/resources/pantry.txt", user.getID());
+
+        // Load the dashboard
+        Dashboard dash = new Dashboard(user, this, inventoryData, "src/main/resources/pantry.txt", user.getID());
         setContentPane(dash);
         pack();
         setLocationRelativeTo(null);
     }
 
     @Override
-    public void showLogin() {
+    public void showLogin() throws FileNotFoundException {
         LoginPanel login = new LoginPanel(this);
         setContentPane(login);
         revalidate();

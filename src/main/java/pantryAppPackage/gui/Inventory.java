@@ -17,14 +17,14 @@ public class Inventory extends JPanel {
     // SAMPLE DATA (LATER ON WE READ FROM FILES) (DELETE THIS LATER ON) -------------
     String[] columnNames = {"Item ID", "Name", "Category", "Quantity", "Unit", "Threshold", "Expiry Date"};
 
-    String[][] data = {
-            {"ITM001", "Apples", "Fruit", "50", "kg", "10", "2025-11-20"},
-            {"ITM002", "Milk", "Dairy", "30", "liters", "5", "2025-11-10"},
-            {"ITM003", "Rice", "Grains", "100", "kg", "20", "2026-02-01"},
-            {"ITM003", "Rice", "Grains", "100", "kg", "20", "2026-02-01"},
-            {"ITM003", "Rice", "Grains", "100", "kg", "20", "2026-02-01"},
-            {"ITM003", "Rice", "Grains", "100", "kg", "20", "2026-02-01"}
-    };
+//    String[][] data = {
+//            {"ITM001", "Apples", "Fruit", "50", "kg", "10", "2025-11-20"},
+//            {"ITM002", "Milk", "Dairy", "30", "liters", "5", "2025-11-10"},
+//            {"ITM003", "Rice", "Grains", "100", "kg", "20", "2026-02-01"},
+//            {"ITM003", "Rice", "Grains", "100", "kg", "20", "2026-02-01"},
+//            {"ITM003", "Rice", "Grains", "100", "kg", "20", "2026-02-01"},
+//            {"ITM003", "Rice", "Grains", "100", "kg", "20", "2026-02-01"}
+//    };
     // ------------------------------------------------------------------------------
 
     private JTable table;
@@ -37,7 +37,7 @@ public class Inventory extends JPanel {
             Arrays.asList(null, null, null)  // 0=text, 1=expiry, 2=low stock
     );
 
-    Inventory () {
+    Inventory (String[][] data) {
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         setBackground(Color.WHITE);
@@ -166,6 +166,10 @@ public class Inventory extends JPanel {
         add(scrollPane);
         add(Box.createRigidArea(new Dimension(10, 0)));
         add(buttonsPane);
+    }
+
+    public DefaultTableModel getModel() {
+        return model;
     }
 
     public void filterTableWithText(String text, String col) {
