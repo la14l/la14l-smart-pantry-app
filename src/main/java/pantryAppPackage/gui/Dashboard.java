@@ -1,10 +1,12 @@
 package pantryAppPackage.gui;
 
+import pantryAppPackage.AuthService;
 import pantryAppPackage.MainFrame;
 import pantryAppPackage.User;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.FileNotFoundException;
 
 public class Dashboard extends JPanel {
 
@@ -34,7 +36,13 @@ public class Dashboard extends JPanel {
         });
 
         dashboardSidebar.getLogoutMenuBtn().addActionListener(e -> {
-            // ADD LOGOUT LOGIC HERE
+            AuthService.logout();
+
+            try {
+                mainFrame.showLogin();
+            } catch (FileNotFoundException ex) {
+                System.out.println("Logout Failed Due To an IO Exception");
+            }
         });
 
         this.add(dashboardSidebar);
