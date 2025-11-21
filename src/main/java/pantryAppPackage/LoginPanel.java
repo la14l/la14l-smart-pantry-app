@@ -2,6 +2,7 @@ package pantryAppPackage;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.FileNotFoundException;
 
 public class LoginPanel extends JPanel {
     private final AuthService authService = new AuthService();
@@ -24,7 +25,7 @@ public class LoginPanel extends JPanel {
     String phoneNumber;
     String email;
 
-    public LoginPanel(MainFrame mainFrame) {
+    public LoginPanel(MainFrame mainFrame) throws FileNotFoundException {
         // Base layout
         this.mainFrame = mainFrame;
         setLayout(new GridBagLayout()); // Using the griBagLayout
@@ -105,7 +106,13 @@ public class LoginPanel extends JPanel {
 
         // Enter button (span 2 cols)
         enterButton = new JButton("Enter");
-        enterButton.addActionListener(e -> onEnter()); // Using lambda to instantiate anonymous class. Skipping the creation of a class.
+        enterButton.addActionListener(e -> {
+            try {
+                onEnter();
+            } catch (FileNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
+        }); // Using lambda to instantiate anonymous class. Skipping the creation of a class.
         c.gridx = 0;
         c.gridy = 5;
         c.gridwidth = 2;
@@ -154,7 +161,7 @@ public class LoginPanel extends JPanel {
     }
 
 
-    private void onEnter() {
+    private void onEnter() throws FileNotFoundException  {
         // Store the user input
         email = emailField.getText().trim().toLowerCase();
         char[] pw = passwordField.getPassword();

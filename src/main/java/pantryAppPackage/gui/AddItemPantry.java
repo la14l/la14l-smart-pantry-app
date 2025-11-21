@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 
 public class AddItemPantry extends JPanel {
 
-    private JTextField ItemID, Name, Category, Quantity, Unit, Threshold, ExpiryDate;
+    private JTextField Name, Category, Quantity, Unit, Threshold, ExpiryDate;
     private JButton AddItemBtn;
 
     AddItemPantry () {
@@ -21,8 +21,6 @@ public class AddItemPantry extends JPanel {
 
         JLabel emptyBlockOne = new JLabel();
         JLabel sectionTitle = new JLabel("Add Item");
-        JLabel ItemIDLabel = new JLabel("Item ID");
-        ItemID = new JTextField("");
         JLabel NameLabel = new JLabel("Name");
         Name = new JTextField("");
         JLabel CategoryLabel = new JLabel("Category");
@@ -39,7 +37,6 @@ public class AddItemPantry extends JPanel {
         AddItemBtn.setEnabled(false);
 
         AddItemInputFieldsHandler addItemInputFieldsHandler = new AddItemInputFieldsHandler();
-        ItemID.addActionListener(addItemInputFieldsHandler);
         Name.addActionListener(addItemInputFieldsHandler);
         Category.addActionListener(addItemInputFieldsHandler);
         Quantity.addActionListener(addItemInputFieldsHandler);
@@ -47,13 +44,11 @@ public class AddItemPantry extends JPanel {
         Threshold.addActionListener(addItemInputFieldsHandler);
         ExpiryDate.addActionListener(addItemInputFieldsHandler);
 
-        AddItemButtonHandler addItemButtonHandler = new AddItemButtonHandler();
-        AddItemBtn.addActionListener(addItemButtonHandler);
+
 
         int labelWidth = 75;
         int labelHeight = 25;
 
-        ItemIDLabel.setPreferredSize(new Dimension(labelWidth, labelHeight));
         NameLabel.setPreferredSize(new Dimension(labelWidth, labelHeight));
         CategoryLabel.setPreferredSize(new Dimension(labelWidth, labelHeight));
         QuantityLabel.setPreferredSize(new Dimension(labelWidth, labelHeight));
@@ -64,44 +59,38 @@ public class AddItemPantry extends JPanel {
         JPanel InputElementOne = new JPanel();
         InputElementOne.setLayout(new BoxLayout(InputElementOne, BoxLayout.X_AXIS));
         InputElementOne.setBackground(Color.WHITE);
-        InputElementOne.add(ItemIDLabel);
-        InputElementOne.add(ItemID);
+        InputElementOne.add(NameLabel);
+        InputElementOne.add(Name);
 
         JPanel InputElementTwo = new JPanel();
         InputElementTwo.setLayout(new BoxLayout(InputElementTwo, BoxLayout.X_AXIS));
         InputElementTwo.setBackground(Color.WHITE);
-        InputElementTwo.add(NameLabel);
-        InputElementTwo.add(Name);
+        InputElementTwo.add(CategoryLabel);
+        InputElementTwo.add(Category);
 
         JPanel InputElementThree = new JPanel();
         InputElementThree.setLayout(new BoxLayout(InputElementThree, BoxLayout.X_AXIS));
         InputElementThree.setBackground(Color.WHITE);
-        InputElementThree.add(CategoryLabel);
-        InputElementThree.add(Category);
+        InputElementThree.add(QuantityLabel);
+        InputElementThree.add(Quantity);
 
         JPanel InputElementFour = new JPanel();
         InputElementFour.setLayout(new BoxLayout(InputElementFour, BoxLayout.X_AXIS));
         InputElementFour.setBackground(Color.WHITE);
-        InputElementFour.add(QuantityLabel);
-        InputElementFour.add(Quantity);
+        InputElementFour.add(UnitLabel);
+        InputElementFour.add(Unit);
 
         JPanel InputElementFive = new JPanel();
         InputElementFive.setLayout(new BoxLayout(InputElementFive, BoxLayout.X_AXIS));
         InputElementFive.setBackground(Color.WHITE);
-        InputElementFive.add(UnitLabel);
-        InputElementFive.add(Unit);
+        InputElementFive.add(ThresholdLabel);
+        InputElementFive.add(Threshold);
 
         JPanel InputElementSix = new JPanel();
         InputElementSix.setLayout(new BoxLayout(InputElementSix, BoxLayout.X_AXIS));
         InputElementSix.setBackground(Color.WHITE);
-        InputElementSix.add(ThresholdLabel);
-        InputElementSix.add(Threshold);
-
-        JPanel InputElementSeven = new JPanel();
-        InputElementSeven.setLayout(new BoxLayout(InputElementSeven, BoxLayout.X_AXIS));
-        InputElementSeven.setBackground(Color.WHITE);
-        InputElementSeven.add(ExpiryDateLabel);
-        InputElementSeven.add(ExpiryDate);
+        InputElementSix.add(ExpiryDateLabel);
+        InputElementSix.add(ExpiryDate);
 
         // Row 1
         form.add(sectionTitle);
@@ -109,18 +98,17 @@ public class AddItemPantry extends JPanel {
 
         // Row 2
         form.add(InputElementOne);
-        form.add(InputElementFive);
+        form.add(InputElementFour);
 
         // Row 3
         form.add(InputElementTwo);
-        form.add(InputElementSix);
+        form.add(InputElementFive);
 
         // Row 4
         form.add(InputElementThree);
-        form.add(InputElementSeven);
+        form.add(InputElementSix);
 
         // Row 5
-        form.add(InputElementFour);
         form.add(AddItemBtn);
 
         add(form);
@@ -132,7 +120,7 @@ public class AddItemPantry extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e)  {
-            if (ItemID.getText().equals("") || Name.getText().equals("") || Category.getText().equals("") || Quantity.getText().equals("") || Unit.getText().equals("") || Threshold.getText().equals("") || ExpiryDate.getText().equals("")) {
+            if (Name.getText().equals("") || Category.getText().equals("") || Quantity.getText().equals("") || Unit.getText().equals("") || Threshold.getText().equals("") || ExpiryDate.getText().equals("")) {
                 AddItemBtn.setEnabled(false);
             } else {
                 AddItemBtn.setEnabled(true);
@@ -140,17 +128,21 @@ public class AddItemPantry extends JPanel {
         }
     }
 
-    private class AddItemButtonHandler implements ActionListener {
+    public String getItemName() { return Name.getText(); }
+    public String getItemCategory() { return Category.getText(); }
+    public String getItemQuantity() { return Quantity.getText(); }
+    public String getItemUnit() { return Unit.getText(); }
+    public String getItemThreshold() { return Threshold.getText(); }
+    public String getItemExpiryDate() { return ExpiryDate.getText(); }
+    public JButton getAddItemBtn() {return AddItemBtn;}
 
-        @Override
-        public void actionPerformed(ActionEvent e)  {
-            if (ItemID.getText().equals("") || Name.getText().equals("") || Category.getText().equals("") || Quantity.getText().equals("") || Unit.getText().equals("") || Threshold.getText().equals("") || ExpiryDate.getText().equals("")) {
-                JOptionPane.showMessageDialog(null, "You have left one or more text fields.");
-            } else {
-                // Add Item Output Point
-            }
-        }
-    }
+    public void setItemName(String value) { Name.setText(value); }
+    public void setItemCategory(String value) { Category.setText(value); }
+    public void setItemQuantity(String value) { Quantity.setText(value); }
+    public void setItemUnit(String value) { Unit.setText(value); }
+    public void setItemThreshold(String value) { Threshold.setText(value); }
+    public void setItemExpiryDate(String value) { ExpiryDate.setText(value); }
+
 
     // TEST - REMOVE LATER
     public static void main(String[] args) {
