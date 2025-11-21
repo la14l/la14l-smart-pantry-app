@@ -9,7 +9,7 @@ public class DashboardSidebar extends JPanel {
     private JButton shoppingMenuBtn;
     private JLabel profile;
 
-    DashboardSidebar (String username) {
+    DashboardSidebar(String username) {
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -38,15 +38,11 @@ public class DashboardSidebar extends JPanel {
 
     }
 
-    public JButton getPantryMenuBtn() {return pantryMenuBtn;}
-    public JButton getShoppingMenuBtn() {return shoppingMenuBtn;}
+    public JButton getPantryMenuBtn() {
+        return pantryMenuBtn;
+    }
 
-    // TEST - REMOVE LATER
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Dashboard");
-        frame.add(new DashboardSidebar("Luffy"));
-        frame.setSize(200, 300);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
+    public JButton getShoppingMenuBtn() {
+        return shoppingMenuBtn;
     }
 }

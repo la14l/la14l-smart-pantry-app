@@ -55,12 +55,4 @@ public class SearchFilter extends JPanel {
     public JCheckBox getAboutToExpireItemsCheckBox() {return aboutToExpireItemsCheckBox;}
     public JCheckBox getLowStockItemsCheckBox() {return lowStockItemsCheckBox;}
     public JComboBox getSearchFilterComboBox() {return searchFilterComboBox;}
-
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Search and Filter");
-        frame.add(new SearchFilter());
-        frame.pack();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-    }
 }

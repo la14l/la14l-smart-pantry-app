@@ -4,7 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class LoginPanel extends JPanel {
-    private final AuthService authService;
+    private final AuthService authService = new AuthService();
+    private final MainFrame mainFrame;
+
     // Labels
     JLabel loginLabel, registerLabel, nameLabel, passwordLabel, emailLabel, phoneLabel;
 
@@ -22,13 +24,13 @@ public class LoginPanel extends JPanel {
     String phoneNumber;
     String email;
 
-    public LoginPanel(AuthService authService) {
+    public LoginPanel(MainFrame mainFrame) {
         // Base layout
+        this.mainFrame = mainFrame;
         setLayout(new GridBagLayout()); // Using the griBagLayout
         GridBagConstraints c = new GridBagConstraints(); // Creating a constraint object for element positioning. The elements are centered because anchor equals center by default
         c.insets = new Insets(10, 10, 10, 10); // Create padding between the components
         c.fill = GridBagConstraints.HORIZONTAL; // Make the components stretch over their allowed horizontal space
-        this.authService = authService;
 
         // Fonts (panel-scoped)
         Font labelFont = new Font("SansSerif", Font.BOLD, 16);
@@ -167,7 +169,7 @@ public class LoginPanel extends JPanel {
             if (operationIsLogin) {
                 if (authService.login(email, password)) {
                     System.out.println("Login successful");
-                    // TODO: Proceed to the dashboard
+                    mainFrame.showDashboard(authService.getCurrentUser());
                 } else {
                     JOptionPane.showMessageDialog(this, "Please check your email or password.");
                 }
@@ -181,7 +183,7 @@ public class LoginPanel extends JPanel {
                     return;
                 }
                 System.out.println("Registration successful");
-                // TODO: Proceed to the dashboard
+                mainFrame.showDashboard(authService.getCurrentUser());
             }
         }
     }

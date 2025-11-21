@@ -32,13 +32,4 @@ public class Pantry extends JPanel {
         add(new JSeparator(SwingConstants.HORIZONTAL));
         add(addItemPantry);
     }
-
-    // TEST - REMOVE LATER
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Pantry");
-        frame.add(new Pantry());
-        frame.pack();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-    }
 }

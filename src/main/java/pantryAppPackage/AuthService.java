@@ -14,7 +14,7 @@ public class AuthService {
         loadUsers(); // Load the users in the users.txt file to the ArrayList on instantiation of the class.
     }
 
-    public User register(String name, String email, String phone, String password) throws IllegalStateException{
+    public void register(String name, String email, String phone, String password) throws IllegalStateException{
         // Check if the email already exists.
         if (findByEmail(email) != null) throw new IllegalStateException("Email already registered");
 
@@ -24,7 +24,7 @@ public class AuthService {
 
         users.add(user); // Add the object to the ArrayList.
         saveUsers(); // Store the user in users.txt.
-        return user;
+        currentUser = user; // Set as current user
     }
 
     public boolean login(String email, String password) {
