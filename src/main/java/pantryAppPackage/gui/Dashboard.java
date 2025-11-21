@@ -33,6 +33,10 @@ public class Dashboard extends JPanel {
             cl.show(currentWindow, "Shopping");
         });
 
+        dashboardSidebar.getLogoutMenuBtn().addActionListener(e -> {
+            // ADD LOGOUT LOGIC HERE
+        });
+
         this.add(dashboardSidebar);
         this.add(new JSeparator(SwingConstants.VERTICAL));
         this.add(currentWindow);

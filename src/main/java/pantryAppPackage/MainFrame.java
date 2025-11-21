@@ -4,7 +4,7 @@ import pantryAppPackage.gui.Dashboard;
 
 import javax.swing.*;
 
-public class MainFrame extends JFrame implements PanelSwitchable{
+public class MainFrame extends JFrame implements PanelSwitchable {
 
 
     public MainFrame() {
@@ -28,8 +28,8 @@ public class MainFrame extends JFrame implements PanelSwitchable{
     public void showDashboard(User user) {
         Dashboard dash = new Dashboard(user, this);
         setContentPane(dash);
-        revalidate();
-        repaint();
+        pack();
+        setLocationRelativeTo(null);
     }
 
     @Override
