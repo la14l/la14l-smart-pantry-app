@@ -25,7 +25,7 @@ public class Pantry extends JPanel {
         this.pantryFilePath = pantryFilePath;
         this.currentUserID = userID;
         SearchFilter searchFilter = new SearchFilter();
-        inventory = new Inventory(inventoryData);
+        inventory = new Inventory(inventoryData, pantryFilePath, userID);
         addItemPantry = new AddItemPantry();
         AddItemButton = addItemPantry.getAddItemBtn();
 
