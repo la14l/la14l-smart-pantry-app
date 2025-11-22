@@ -1,5 +1,6 @@
 package pantryAppPackage.gui;
 
+import pantryAppPackage.AuthService;
 import pantryAppPackage.MainFrame;
 import pantryAppPackage.User;
 
@@ -34,7 +35,9 @@ public class Dashboard extends JPanel {
         });
 
         dashboardSidebar.getLogoutMenuBtn().addActionListener(e -> {
-            // ADD LOGOUT LOGIC HERE
+            AuthService.logout();
+            mainFrame.showLogin();
+            System.out.println("Logout successful");
         });
 
         this.add(dashboardSidebar);

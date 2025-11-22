@@ -25,7 +25,7 @@ public class LoginPanel extends JPanel {
     String phoneNumber;
     String email;
 
-    public LoginPanel(MainFrame mainFrame) throws FileNotFoundException {
+    public LoginPanel(MainFrame mainFrame) {
         // Base layout
         this.mainFrame = mainFrame;
         setLayout(new GridBagLayout()); // Using the griBagLayout
@@ -176,7 +176,13 @@ public class LoginPanel extends JPanel {
             if (operationIsLogin) {
                 if (authService.login(email, password)) {
                     System.out.println("Login successful");
-                    mainFrame.showDashboard(authService.getCurrentUser());
+
+                    try {
+                    mainFrame.showDashboard(authService.getCurrentUser());}
+                    catch (FileNotFoundException e) {
+                        System.out.println("Rendering Dashboard Failed Due To an IO Exception");
+                    }
+
                 } else {
                     JOptionPane.showMessageDialog(this, "Please check your email or password.");
                 }
@@ -190,7 +196,13 @@ public class LoginPanel extends JPanel {
                     return;
                 }
                 System.out.println("Registration successful");
-                mainFrame.showDashboard(authService.getCurrentUser());
+
+                try {
+                    mainFrame.showDashboard(authService.getCurrentUser());}
+                catch (FileNotFoundException e) {
+                    System.out.println("Rendering Dashboard Failed Due To an IO Exception");
+                }
+
             }
         }
     }
