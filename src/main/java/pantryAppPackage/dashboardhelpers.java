@@ -21,6 +21,17 @@ public interface DashboardHelpers {
         return null;
     }
 
+    //autogenerating id for item
+    public void autogenerateID(){
+        static int i=1;
+        
+        default String generateId(){
+            String ID= String.format("item%04d",i);
+            ID++;//increment 
+            return ID;
+    }
+}
+
     // validating inputs 
     // strings can't be empty 
     default void cantEmpty(String something, String someValue) {
