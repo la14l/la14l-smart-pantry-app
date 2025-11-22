@@ -43,9 +43,7 @@ public class AddEntryDialogBox {
             }
         });
 
-        cancelBtn.addActionListener(e -> {
-            dialog.dispose();
-        });
+        cancelBtn.addActionListener(e -> dialog.dispose());
 
         buttonPanel.add(submitBtn);
         buttonPanel.add(cancelBtn);

@@ -7,10 +7,10 @@ import java.awt.event.ActionListener;
 
 public class AddItemPantry extends JPanel {
 
-    private JTextField Name, Category, Quantity, Unit, Threshold, ExpiryDate;
-    private JButton AddItemBtn;
+    final private JTextField Name, Category, Quantity, Unit, Threshold, ExpiryDate;
+    final private JButton AddItemBtn;
 
-    AddItemPantry () {
+    AddItemPantry() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         setBackground(Color.WHITE);
@@ -43,7 +43,6 @@ public class AddItemPantry extends JPanel {
         Unit.addActionListener(addItemInputFieldsHandler);
         Threshold.addActionListener(addItemInputFieldsHandler);
         ExpiryDate.addActionListener(addItemInputFieldsHandler);
-
 
 
         int labelWidth = 75;
@@ -119,8 +118,8 @@ public class AddItemPantry extends JPanel {
     private class AddItemInputFieldsHandler implements ActionListener {
 
         @Override
-        public void actionPerformed(ActionEvent e)  {
-            if (Name.getText().equals("") || Category.getText().equals("") || Quantity.getText().equals("") || Unit.getText().equals("") || Threshold.getText().equals("") || ExpiryDate.getText().equals("")) {
+        public void actionPerformed(ActionEvent e) {
+            if (Name.getText().isEmpty() || Category.getText().isEmpty() || Quantity.getText().isEmpty() || Unit.getText().isEmpty() || Threshold.getText().isEmpty() || ExpiryDate.getText().isEmpty()) {
                 AddItemBtn.setEnabled(false);
             } else {
                 AddItemBtn.setEnabled(true);
@@ -128,28 +127,56 @@ public class AddItemPantry extends JPanel {
         }
     }
 
-    public String getItemName() { return Name.getText(); }
-    public String getItemCategory() { return Category.getText(); }
-    public String getItemQuantity() { return Quantity.getText(); }
-    public String getItemUnit() { return Unit.getText(); }
-    public String getItemThreshold() { return Threshold.getText(); }
-    public String getItemExpiryDate() { return ExpiryDate.getText(); }
-    public JButton getAddItemBtn() {return AddItemBtn;}
-
-    public void setItemName(String value) { Name.setText(value); }
-    public void setItemCategory(String value) { Category.setText(value); }
-    public void setItemQuantity(String value) { Quantity.setText(value); }
-    public void setItemUnit(String value) { Unit.setText(value); }
-    public void setItemThreshold(String value) { Threshold.setText(value); }
-    public void setItemExpiryDate(String value) { ExpiryDate.setText(value); }
-
-
-    // TEST - REMOVE LATER
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Add Item");
-        frame.add(new AddItemPantry());
-        frame.pack();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
+    public String getItemName() {
+        return Name.getText();
     }
+
+    public String getItemCategory() {
+        return Category.getText();
+    }
+
+    public String getItemQuantity() {
+        return Quantity.getText();
+    }
+
+    public String getItemUnit() {
+        return Unit.getText();
+    }
+
+    public String getItemThreshold() {
+        return Threshold.getText();
+    }
+
+    public String getItemExpiryDate() {
+        return ExpiryDate.getText();
+    }
+
+    public JButton getAddItemBtn() {
+        return AddItemBtn;
+    }
+
+    public void setItemName(String value) {
+        Name.setText(value);
+    }
+
+    public void setItemCategory(String value) {
+        Category.setText(value);
+    }
+
+    public void setItemQuantity(String value) {
+        Quantity.setText(value);
+    }
+
+    public void setItemUnit(String value) {
+        Unit.setText(value);
+    }
+
+    public void setItemThreshold(String value) {
+        Threshold.setText(value);
+    }
+
+    public void setItemExpiryDate(String value) {
+        ExpiryDate.setText(value);
+    }
+
 }

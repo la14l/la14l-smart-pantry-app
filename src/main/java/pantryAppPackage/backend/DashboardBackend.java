@@ -1,4 +1,4 @@
-package pantryAppPackage;
+package pantryAppPackage.backend;
 
 import java.io.*;
 import java.util.Arrays;
@@ -24,7 +24,7 @@ public class DashboardBackend {
         return numberOfLines;
     }
 
-    // Gets all the items the user has in pantry
+    // Gets all the items the user has in the pantry
     public static String[][] readTableDataFromFile(String filePath, String userID) throws FileNotFoundException {
         int numberOfRows = getNumberOfLines(filePath, userID);
         String[][] data = new String[numberOfRows][];
@@ -34,10 +34,8 @@ public class DashboardBackend {
         int row = 0;
         while (row < numberOfRows && database.hasNextLine()) {
             String entry = database.nextLine();
-            String[] fields = entry.split(",");
-            if (!fields[0].equals(userID)) {
-                continue;
-            } else {
+            String[] fields = entry.split("\\|");
+            if (fields[0].equals(userID)) {
                 data[row] = Arrays.copyOfRange(fields, 1, fields.length);
                 row++;
             }
@@ -51,7 +49,7 @@ public class DashboardBackend {
     // Called via the Add Item Button in the pantry panel
     public static void writeItemDataIntoPantryFile(String filePath, String userID, String[] itemData) throws IOException {
         try (PrintWriter pantryFile = new PrintWriter(new FileWriter(filePath, true))) {
-            String entry = userID + "," + String.join(",", itemData);
+            String entry = userID + "|" + String.join("|", itemData);
             pantryFile.println(entry);
         }
     }
@@ -63,7 +61,7 @@ public class DashboardBackend {
 
         while (database.hasNextLine()) {
             String entry = database.nextLine();
-            String[] fields = entry.split(",");
+            String[] fields = entry.split("\\|");
 
             if (!(fields[0].equals(userID) && fields[1].equals(itemData[0]))) {
                 updatedContent.append(entry).append("\n");
@@ -83,12 +81,12 @@ public class DashboardBackend {
 
         while (database.hasNextLine()) {
             String entry = database.nextLine();
-            String[] fields = entry.split(",");
+            String[] fields = entry.split("\\|");
 
             if (!(fields[0].equals(userID) && fields[1].equals(itemData[0]))) {
                 updatedContent.append(entry).append("\n");
             } else {
-                String updatedEntry = fields[0] + "," + String.join(",", itemData);
+                String updatedEntry = fields[0] + "|" + String.join("|", itemData);
                 updatedContent.append(updatedEntry).append("\n");
             }
         }
@@ -98,5 +96,4 @@ public class DashboardBackend {
         pantryFile.print(updatedContent);
         pantryFile.close();
     }
-
 }
