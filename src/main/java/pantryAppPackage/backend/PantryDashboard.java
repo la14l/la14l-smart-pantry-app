@@ -1,4 +1,4 @@
-package pantryAppPackage;
+package pantryAppPackage.backend;
 
 public class PantryDashboard {
 }

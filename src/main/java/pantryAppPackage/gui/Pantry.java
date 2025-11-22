@@ -1,6 +1,6 @@
 package pantryAppPackage.gui;
 
-import pantryAppPackage.DashboardBackend;
+import pantryAppPackage.backend.DashboardBackend;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -11,11 +11,11 @@ import java.io.IOException;
 
 public class Pantry extends JPanel {
 
-    private Inventory inventory;
-    private AddItemPantry addItemPantry;
-    private JButton AddItemButton;
-    private String pantryFilePath;
-    private String currentUserID;
+    final private Inventory inventory;
+    final private AddItemPantry addItemPantry;
+    final private JButton AddItemButton;
+    final private String pantryFilePath;
+    final private String currentUserID;
 
     Pantry (String[][] inventoryData, String pantryFilePath, String userID) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -37,13 +37,9 @@ public class Pantry extends JPanel {
             inventory.filterTableWithText(searchFilter.getSearchBar().getText(), filterCategory);
         });
 
-        searchFilter.getAboutToExpireItemsCheckBox().addActionListener(e -> {
-            inventory.filterTableWithCheckBoxes("About To Expire", searchFilter.getAboutToExpireItemsCheckBox().isSelected());
-        });
+        searchFilter.getAboutToExpireItemsCheckBox().addActionListener(e -> inventory.filterTableWithCheckBoxes("About To Expire", searchFilter.getAboutToExpireItemsCheckBox().isSelected()));
 
-        searchFilter.getLowStockItemsCheckBox().addActionListener(e -> {
-            inventory.filterTableWithCheckBoxes("Low Stock Items", searchFilter.getLowStockItemsCheckBox().isSelected());
-        });
+        searchFilter.getLowStockItemsCheckBox().addActionListener(e -> inventory.filterTableWithCheckBoxes("Low Stock Items", searchFilter.getLowStockItemsCheckBox().isSelected()));
 
         add(searchFilter);
         add(inventory);

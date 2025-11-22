@@ -1,8 +1,8 @@
 package pantryAppPackage.gui;
 
-import pantryAppPackage.AuthService;
-import pantryAppPackage.MainFrame;
-import pantryAppPackage.User;
+import pantryAppPackage.backend.AuthService;
+import pantryAppPackage.backend.MainFrame;
+import pantryAppPackage.backend.User;
 
 import javax.swing.*;
 import java.awt.*;

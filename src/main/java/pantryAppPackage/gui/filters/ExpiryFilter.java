@@ -1,4 +1,4 @@
-package pantryAppPackage.filters;
+package pantryAppPackage.gui.filters;
 
 import javax.swing.RowFilter;
 import java.time.LocalDate;

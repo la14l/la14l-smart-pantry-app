@@ -5,10 +5,10 @@ import java.awt.*;
 
 public class DashboardSidebar extends JPanel {
 
-    private JButton pantryMenuBtn;
-    private JButton shoppingMenuBtn;
-    private JButton logoutMenuBtn;
-    private JLabel profile;
+    final private JButton pantryMenuBtn;
+    final private JButton shoppingMenuBtn;
+    final private JButton logoutMenuBtn;
+    final private JLabel profile;
 
     DashboardSidebar(String username) {
 

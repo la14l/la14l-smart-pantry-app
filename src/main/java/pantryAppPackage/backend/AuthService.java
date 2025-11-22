@@ -1,4 +1,4 @@
-package pantryAppPackage;
+package pantryAppPackage.backend;
 
 
 import java.io.*;

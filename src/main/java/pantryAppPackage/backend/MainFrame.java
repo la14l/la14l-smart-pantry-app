@@ -1,5 +1,6 @@
-package pantryAppPackage;
+package pantryAppPackage.backend;
 
+import pantryAppPackage.gui.LoginPanel;
 import pantryAppPackage.gui.Dashboard;
 
 import javax.swing.*;

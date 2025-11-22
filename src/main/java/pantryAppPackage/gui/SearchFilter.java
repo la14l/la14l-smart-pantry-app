@@ -5,10 +5,10 @@ import java.awt.*;
 
 public class SearchFilter extends JPanel {
 
-    private JTextField searchBar;
-    private JCheckBox aboutToExpireItemsCheckBox, lowStockItemsCheckBox;
-    private final String[] categories = {"Name", "Category"};
-    private JComboBox searchFilterComboBox;
+    final private JTextField searchBar;
+    final private JCheckBox aboutToExpireItemsCheckBox, lowStockItemsCheckBox;
+    final private String[] categories = {"Name", "Category"};
+    final private JComboBox<String> searchFilterComboBox;
 
     SearchFilter () {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -26,7 +26,7 @@ public class SearchFilter extends JPanel {
 
         // Creating the input components
         searchBar = new JTextField();
-        searchFilterComboBox = new JComboBox(categories);
+        searchFilterComboBox = new JComboBox<>(categories);
         searchFilterComboBox.setBackground(Color.WHITE);
 
         JLabel bottomSectionTitle = new JLabel("Filter by");
@@ -54,5 +54,5 @@ public class SearchFilter extends JPanel {
     public JTextField getSearchBar() {return searchBar;}
     public JCheckBox getAboutToExpireItemsCheckBox() {return aboutToExpireItemsCheckBox;}
     public JCheckBox getLowStockItemsCheckBox() {return lowStockItemsCheckBox;}
-    public JComboBox getSearchFilterComboBox() {return searchFilterComboBox;}
+    public JComboBox<String> getSearchFilterComboBox() {return searchFilterComboBox;}
 }
