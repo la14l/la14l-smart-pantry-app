@@ -55,4 +55,48 @@ public class DashboardBackend {
             pantryFile.println(entry);
         }
     }
+
+    // Delete an item from the pantry
+    public static void removeItemDataFromPantryFile(String filePath, String userID, String[] itemData) throws IOException {
+        Scanner database = new Scanner(new FileReader(filePath));
+        StringBuilder updatedContent = new StringBuilder();
+
+        while (database.hasNextLine()) {
+            String entry = database.nextLine();
+            String[] fields = entry.split(",");
+
+            if (!(fields[0].equals(userID) && fields[1].equals(itemData[0]))) {
+                updatedContent.append(entry).append("\n");
+            }
+        }
+        database.close();
+
+        PrintWriter pantryFile = new PrintWriter(filePath);
+        pantryFile.print(updatedContent);
+        pantryFile.close();
+    }
+
+    // Edit an item in the pantry
+    public static void editItemDataFromPantryFile(String filePath, String userID, String[] itemData) throws IOException {
+        Scanner database = new Scanner(new FileReader(filePath));
+        StringBuilder updatedContent = new StringBuilder();
+
+        while (database.hasNextLine()) {
+            String entry = database.nextLine();
+            String[] fields = entry.split(",");
+
+            if (!(fields[0].equals(userID) && fields[1].equals(itemData[0]))) {
+                updatedContent.append(entry).append("\n");
+            } else {
+                String updatedEntry = fields[0] + "," + String.join(",", itemData);
+                updatedContent.append(updatedEntry).append("\n");
+            }
+        }
+        database.close();
+
+        PrintWriter pantryFile = new PrintWriter(filePath);
+        pantryFile.print(updatedContent);
+        pantryFile.close();
+    }
+
 }
