@@ -1,9 +1,14 @@
 package pantryAppPackage;
 
-import javax.swing.*;
+import pantryAppPackage.gui.Dashboard;
 
-public class MainFrame extends JFrame {
-    public MainFrame(AuthService authService) {
+import javax.swing.*;
+import java.io.FileNotFoundException;
+
+public class MainFrame extends JFrame implements PanelSwitchable {
+
+
+    public MainFrame() {
         // Set frame title
         setTitle("Smart Pantry Inventory System");
         // Set frame size
@@ -13,9 +18,31 @@ public class MainFrame extends JFrame {
         // Center the frame on the screen.
         setLocationRelativeTo(null);
 
-        // Set the content of the JFrame to the content of LoginPanel. This is how to have different panels for the project (Login, Dashboard, ...)
-        setContentPane(new LoginPanel(authService));
         // Set the JFrame visible
         setVisible(true);
+
+        // Start by showing the login page
+        showLogin();
+    }
+
+    @Override
+    public void showDashboard(User user) throws FileNotFoundException {
+
+        // Populate the inventory data into the GUI
+        String[][] inventoryData = DashboardBackend.readTableDataFromFile("src/main/resources/pantry.txt", user.getID());
+
+        // Load the dashboard
+        Dashboard dash = new Dashboard(user, this, inventoryData, "src/main/resources/pantry.txt", user.getID());
+        setContentPane(dash);
+        pack();
+        setLocationRelativeTo(null);
+    }
+
+    @Override
+    public void showLogin() {
+        LoginPanel login = new LoginPanel(this);
+        setContentPane(login);
+        revalidate();
+        repaint();
     }
 }

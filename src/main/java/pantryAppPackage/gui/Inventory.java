@@ -6,9 +6,12 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import pantryAppPackage.DashboardBackend;
 import pantryAppPackage.filters.LowStockFilter;
 import pantryAppPackage.filters.ExpiryFilter;
 
@@ -17,14 +20,14 @@ public class Inventory extends JPanel {
     // SAMPLE DATA (LATER ON WE READ FROM FILES) (DELETE THIS LATER ON) -------------
     String[] columnNames = {"Item ID", "Name", "Category", "Quantity", "Unit", "Threshold", "Expiry Date"};
 
-    String[][] data = {
-            {"ITM001", "Apples", "Fruit", "50", "kg", "10", "2025-11-20"},
-            {"ITM002", "Milk", "Dairy", "30", "liters", "5", "2025-11-10"},
-            {"ITM003", "Rice", "Grains", "100", "kg", "20", "2026-02-01"},
-            {"ITM003", "Rice", "Grains", "100", "kg", "20", "2026-02-01"},
-            {"ITM003", "Rice", "Grains", "100", "kg", "20", "2026-02-01"},
-            {"ITM003", "Rice", "Grains", "100", "kg", "20", "2026-02-01"}
-    };
+//    String[][] data = {
+//            {"ITM001", "Apples", "Fruit", "50", "kg", "10", "2025-11-20"},
+//            {"ITM002", "Milk", "Dairy", "30", "liters", "5", "2025-11-10"},
+//            {"ITM003", "Rice", "Grains", "100", "kg", "20", "2026-02-01"},
+//            {"ITM003", "Rice", "Grains", "100", "kg", "20", "2026-02-01"},
+//            {"ITM003", "Rice", "Grains", "100", "kg", "20", "2026-02-01"},
+//            {"ITM003", "Rice", "Grains", "100", "kg", "20", "2026-02-01"}
+//    };
     // ------------------------------------------------------------------------------
 
     private JTable table;
@@ -37,7 +40,7 @@ public class Inventory extends JPanel {
             Arrays.asList(null, null, null)  // 0=text, 1=expiry, 2=low stock
     );
 
-    Inventory () {
+    Inventory (String[][] data, String filePath, String userID) {
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         setBackground(Color.WHITE);
@@ -123,31 +126,82 @@ public class Inventory extends JPanel {
         });
 
         saveChangesBtn.addActionListener(e -> {
+            if (table.isEditing()) {
+                table.getCellEditor().stopCellEditing();
+            }
+
+            String[] itemData = new String[7];
+            for (int i = 0; i < 7; i++) {
+                itemData[i] = table.getValueAt(editableRow, i).toString();
+            }
+
+            try {
+                DashboardBackend.editItemDataFromPantryFile(filePath, userID, itemData);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+
             editableRow = -1;
-            table.repaint();
             saveChangesBtn.setEnabled(false);
         });
 
         restockBtn.addActionListener(e -> {
             int row = table.getSelectedRow();
             if (row != -1) {
+                // Update the GUI
                 int qty = Integer.parseInt(table.getValueAt(row, 3).toString());
                 qty += 1;
                 table.setValueAt(qty, row, 3);
+
+                // Update the PANTRY FILE
+                String[] itemData = new String[7];
+                for (int i = 0; i < 7; i++) {
+                    itemData[i] = table.getValueAt(row, i).toString();
+                }
+                try {
+                    DashboardBackend.editItemDataFromPantryFile(filePath, userID, itemData);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
 
         consumeBtn.addActionListener(e -> {
             int row = table.getSelectedRow();
             if (row != -1) {
+                // Update the GUI
                 int qty = Integer.parseInt(table.getValueAt(row, 3).toString());
                 qty -= 1;
                 table.setValueAt(qty, row, 3);
+
+                // Update the PANTRY FILE
+                String[] itemData = new String[7];
+                for (int i = 0; i < 7; i++) {
+                    itemData[i] = table.getValueAt(row, i).toString();
+                }
+                try {
+                    DashboardBackend.editItemDataFromPantryFile(filePath, userID, itemData);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
 
         deleteItemBtn.addActionListener(e -> {
             int row = table.getSelectedRow();
+
+            // Update the PANTRY FILE
+            String[] itemData = new String[7];
+            for (int i = 0; i < 7; i++) {
+                itemData[i] = table.getValueAt(row, i).toString();
+            }
+            try {
+                DashboardBackend.removeItemDataFromPantryFile(filePath, userID, itemData);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+
+            // Update the GUI
             if (row != -1) {
                 model.removeRow(row);
             }
@@ -166,6 +220,10 @@ public class Inventory extends JPanel {
         add(scrollPane);
         add(Box.createRigidArea(new Dimension(10, 0)));
         add(buttonsPane);
+    }
+
+    public DefaultTableModel getModel() {
+        return model;
     }
 
     public void filterTableWithText(String text, String col) {
@@ -209,16 +267,6 @@ public class Inventory extends JPanel {
             if (f != null) nonNullFilters.add(f);
         }
         sorter.setRowFilter(nonNullFilters.isEmpty() ? null : RowFilter.andFilter(nonNullFilters));
-
-    }
-
-    // TEST - REMOVE LATER
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Inventory");
-        frame.add(new Inventory());
-        frame.pack();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
 
     }
 }

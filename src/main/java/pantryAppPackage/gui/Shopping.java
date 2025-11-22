@@ -130,14 +130,4 @@ public class Shopping extends JPanel {
         add(Box.createVerticalGlue());
 
     }
-
-    // TEST - REMOVE LATER
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Shopping");
-        frame.add(new Shopping(frame));
-        frame.pack();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-
-    }
 }

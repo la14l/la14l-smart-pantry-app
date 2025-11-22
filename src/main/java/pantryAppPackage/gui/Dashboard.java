@@ -1,20 +1,23 @@
 package pantryAppPackage.gui;
 
+import pantryAppPackage.AuthService;
+import pantryAppPackage.MainFrame;
+import pantryAppPackage.User;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class Dashboard extends JFrame {
+public class Dashboard extends JPanel {
 
-    Dashboard (String username) {
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
-        mainPanel.setBackground(Color.WHITE);
+    public Dashboard(User user, MainFrame mainFrame, String[][] pantryData, String pantryFilePath, String userID) {
+        this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        this.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        this.setBackground(Color.WHITE);
 
-        DashboardSidebar dashboardSidebar = new DashboardSidebar(username);
+        DashboardSidebar dashboardSidebar = new DashboardSidebar(user.getName());
         dashboardSidebar.setPreferredSize(new Dimension(175, dashboardSidebar.getHeight()));
-        Pantry pantry = new Pantry();
-        Shopping shopping = new Shopping(this);
+        Pantry pantry = new Pantry(pantryData, pantryFilePath, userID);
+        Shopping shopping = new Shopping(mainFrame);
 
         JPanel currentWindow = new JPanel();
         currentWindow.setLayout(new CardLayout());
@@ -31,19 +34,14 @@ public class Dashboard extends JFrame {
             cl.show(currentWindow, "Shopping");
         });
 
-        mainPanel.add(dashboardSidebar);
-        mainPanel.add(new JSeparator(SwingConstants.VERTICAL));
-        mainPanel.add(currentWindow);
+        dashboardSidebar.getLogoutMenuBtn().addActionListener(e -> {
+            AuthService.logout();
+            mainFrame.showLogin();
+            System.out.println("Logout successful");
+        });
 
-        add(mainPanel);
-        pack();
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
+        this.add(dashboardSidebar);
+        this.add(new JSeparator(SwingConstants.VERTICAL));
+        this.add(currentWindow);
     }
-
-    // TEST - REMOVE LATER
-    public static void main(String[] args) {
-        new Dashboard("Luffy");
-    }
-
 }

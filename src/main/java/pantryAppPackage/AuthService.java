@@ -8,13 +8,13 @@ import java.util.*;
 public class AuthService {
     private final Path usersFile = Paths.get("src/main/resources/users.txt"); // Create a Path object to make working with the file easier.
     private final ArrayList<User> users = new ArrayList<>(); // Declare an ArrayList of current registered users in the file.
-    private User currentUser; // Declare a reference to point to the current user object.
+    private static User currentUser; // Declare a reference to point to the current user object.
 
     public AuthService() {
         loadUsers(); // Load the users in the users.txt file to the ArrayList on instantiation of the class.
     }
 
-    public User register(String name, String email, String phone, String password) throws IllegalStateException{
+    public void register(String name, String email, String phone, String password) throws IllegalStateException{
         // Check if the email already exists.
         if (findByEmail(email) != null) throw new IllegalStateException("Email already registered");
 
@@ -24,7 +24,7 @@ public class AuthService {
 
         users.add(user); // Add the object to the ArrayList.
         saveUsers(); // Store the user in users.txt.
-        return user;
+        currentUser = user; // Set as current user
     }
 
     public boolean login(String email, String password) {
@@ -36,7 +36,7 @@ public class AuthService {
         return false;
     }
 
-    public void logout() {
+    public static void logout() {
         currentUser = null;
     }
 

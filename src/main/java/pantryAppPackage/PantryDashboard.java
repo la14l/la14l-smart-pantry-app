@@ -726,4 +726,5 @@ public class PantryDashboard implements DashboardHelpers {
     }
     
     
+public class PantryDashboard {
 }

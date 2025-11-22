@@ -2,9 +2,12 @@ package pantryAppPackage;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.FileNotFoundException;
 
 public class LoginPanel extends JPanel {
-    private final AuthService authService;
+    private final AuthService authService = new AuthService();
+    private final MainFrame mainFrame;
+
     // Labels
     JLabel loginLabel, registerLabel, nameLabel, passwordLabel, emailLabel, phoneLabel;
 
@@ -22,13 +25,13 @@ public class LoginPanel extends JPanel {
     String phoneNumber;
     String email;
 
-    public LoginPanel(AuthService authService) {
+    public LoginPanel(MainFrame mainFrame) {
         // Base layout
+        this.mainFrame = mainFrame;
         setLayout(new GridBagLayout()); // Using the griBagLayout
         GridBagConstraints c = new GridBagConstraints(); // Creating a constraint object for element positioning. The elements are centered because anchor equals center by default
         c.insets = new Insets(10, 10, 10, 10); // Create padding between the components
         c.fill = GridBagConstraints.HORIZONTAL; // Make the components stretch over their allowed horizontal space
-        this.authService = authService;
 
         // Fonts (panel-scoped)
         Font labelFont = new Font("SansSerif", Font.BOLD, 16);
@@ -103,7 +106,13 @@ public class LoginPanel extends JPanel {
 
         // Enter button (span 2 cols)
         enterButton = new JButton("Enter");
-        enterButton.addActionListener(e -> onEnter()); // Using lambda to instantiate anonymous class. Skipping the creation of a class.
+        enterButton.addActionListener(e -> {
+            try {
+                onEnter();
+            } catch (FileNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
+        }); // Using lambda to instantiate anonymous class. Skipping the creation of a class.
         c.gridx = 0;
         c.gridy = 5;
         c.gridwidth = 2;
@@ -152,7 +161,7 @@ public class LoginPanel extends JPanel {
     }
 
 
-    private void onEnter() {
+    private void onEnter() throws FileNotFoundException  {
         // Store the user input
         email = emailField.getText().trim().toLowerCase();
         char[] pw = passwordField.getPassword();
@@ -167,7 +176,13 @@ public class LoginPanel extends JPanel {
             if (operationIsLogin) {
                 if (authService.login(email, password)) {
                     System.out.println("Login successful");
-                    // TODO: Proceed to the dashboard
+
+                    try {
+                    mainFrame.showDashboard(authService.getCurrentUser());}
+                    catch (FileNotFoundException e) {
+                        System.out.println("Rendering Dashboard Failed Due To an IO Exception");
+                    }
+
                 } else {
                     JOptionPane.showMessageDialog(this, "Please check your email or password.");
                 }
@@ -181,7 +196,13 @@ public class LoginPanel extends JPanel {
                     return;
                 }
                 System.out.println("Registration successful");
-                // TODO: Proceed to the dashboard
+
+                try {
+                    mainFrame.showDashboard(authService.getCurrentUser());}
+                catch (FileNotFoundException e) {
+                    System.out.println("Rendering Dashboard Failed Due To an IO Exception");
+                }
+
             }
         }
     }
