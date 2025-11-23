@@ -122,7 +122,7 @@ public class AddItemPantry extends JPanel {
             if (Name.getText().isEmpty() || Category.getText().isEmpty() || Quantity.getText().isEmpty() || Unit.getText().isEmpty() || Threshold.getText().isEmpty() || ExpiryDate.getText().isEmpty()) {
                 AddItemBtn.setEnabled(false);
             } else {
-                AddItemBtn.setEnabled(true);
+                AddItemBtn.setEnabled(validateInput());
             }
         }
     }
@@ -179,4 +179,31 @@ public class AddItemPantry extends JPanel {
         ExpiryDate.setText(value);
     }
 
+    public boolean validateInput() {
+        // Check if the date format is valid.
+        if (!getItemExpiryDate().contains("-") || getItemExpiryDate().length() != 10) {
+            JOptionPane.showMessageDialog(this, "Please enter the date in the format YYYY-MM-DD, and add zeros where needed.");
+            return false;
+        }
+        // Check if words are entered instead of integer for quantity and threshold
+        else if (isNotInteger(getItemQuantity())) {
+            System.out.println(getItemQuantity());
+            JOptionPane.showMessageDialog(this, "Quantity should be an Integer");
+            return false;
+        }
+        else if (isNotInteger(getItemThreshold())) {
+            JOptionPane.showMessageDialog(this, "Threshold should be an Integer");
+            return false;
+        }
+        return true;
+    }
+
+    public boolean isNotInteger(String string) {
+        try {
+            Integer.parseInt(string);
+        } catch (NumberFormatException e) {
+            return true;
+        }
+        return false;
+    }
 }

@@ -151,6 +151,8 @@ public class Inventory extends JPanel {
                     throw new RuntimeException(ex);
                 }
             }
+            // Enable the button if the quantity is not zero
+            consumeBtn.setEnabled(table.getSelectedRow() != -1 && Integer.parseInt(table.getValueAt(table.getSelectedRow(), 3).toString()) > 0);
         });
 
         consumeBtn.addActionListener(e -> {
@@ -158,7 +160,7 @@ public class Inventory extends JPanel {
             if (row != -1) {
                 // Update the GUI
                 int qty = Integer.parseInt(table.getValueAt(row, 3).toString());
-                qty -= 1;
+                qty -= Integer.parseInt(table.getValueAt(table.getSelectedRow(), 3).toString()) > 0 ? 1 : 0; // Deduct one only if qty > 0
                 table.setValueAt(qty, row, 3);
 
                 // Update the PANTRY FILE
@@ -172,6 +174,8 @@ public class Inventory extends JPanel {
                     throw new RuntimeException(ex);
                 }
             }
+            // Disable the button if the quantity is zero
+            consumeBtn.setEnabled(table.getSelectedRow() != -1 && Integer.parseInt(table.getValueAt(table.getSelectedRow(), 3).toString()) > 0);
         });
 
         deleteItemBtn.addActionListener(e -> {
