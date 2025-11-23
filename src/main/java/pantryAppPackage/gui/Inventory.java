@@ -17,19 +17,8 @@ import pantryAppPackage.filters.LowStockFilter;
 import pantryAppPackage.filters.ExpiryFilter;
 
 public class Inventory extends JPanel {
-
-    // SAMPLE DATA (LATER ON WE READ FROM FILES) (DELETE THIS LATER ON) -------------
     String[] columnNames = {"Item ID", "Name", "Category", "Quantity", "Unit", "Threshold", "Expiry Date"};
 
-//    String[][] data = {
-//            {"ITM001", "Apples", "Fruit", "50", "kg", "10", "2025-11-20"},
-//            {"ITM002", "Milk", "Dairy", "30", "liters", "5", "2025-11-10"},
-//            {"ITM003", "Rice", "Grains", "100", "kg", "20", "2026-02-01"},
-//            {"ITM003", "Rice", "Grains", "100", "kg", "20", "2026-02-01"},
-//            {"ITM003", "Rice", "Grains", "100", "kg", "20", "2026-02-01"},
-//            {"ITM003", "Rice", "Grains", "100", "kg", "20", "2026-02-01"}
-//    };
-    // ------------------------------------------------------------------------------
 
     private JTable table;
     private DefaultTableModel model;
