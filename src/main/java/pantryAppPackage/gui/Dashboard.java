@@ -9,15 +9,19 @@ import java.awt.*;
 
 public class Dashboard extends JPanel {
 
-    public Dashboard(User user, MainFrame mainFrame, String[][] pantryData, String pantryFilePath, String userID) {
+    private Pantry pantry;
+    private Shopping shopping;
+
+    public Dashboard(User user, MainFrame mainFrame, String[][] pantryData, String pantryFilePath, String userID, Object[][] shoppingData, String shoppingListFilePath) {
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         this.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
         this.setBackground(Color.WHITE);
 
         DashboardSidebar dashboardSidebar = new DashboardSidebar(user.getName());
         dashboardSidebar.setPreferredSize(new Dimension(175, dashboardSidebar.getHeight()));
-        Pantry pantry = new Pantry(pantryData, pantryFilePath, userID);
-        Shopping shopping = new Shopping(mainFrame);
+        shopping = new Shopping(mainFrame, shoppingData, pantryFilePath, userID, shoppingListFilePath, null);
+        pantry = new Pantry(pantryData, pantryFilePath, userID, shoppingListFilePath, shopping);
+        shopping.setPantry(pantry);
 
         JPanel currentWindow = new JPanel();
         currentWindow.setLayout(new CardLayout());

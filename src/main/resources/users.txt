@@ -1,1 +1,2 @@
 0000|Luffy|abc@gmail.com|123456789|123456
+0001|Zoro|def@gmail.com|987654321|987654

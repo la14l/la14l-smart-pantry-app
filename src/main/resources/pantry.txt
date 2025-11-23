@@ -1,0 +1,8 @@
+0000,ITM002,Eggs,Dairy,6,pcs,6,2025-12-20
+0000,ITM003,Chicken Breast,Meat,2,kg,1,2026-01-10
+0000,ITM005,Apples,Fruit,3,pcs,3,2025-12-15
+0001,ITM001,Beef Mince,Meat,5,kg,3,2025-12-25
+0001,ITM002,Green Tea,Beverages,1,box,1,2026-04-10
+0001,ITM003,Sugar,Pantry,2,kg,1,2027-01-30
+0001,ITM004,Carrots,Vegetable,5,pcs,3,2025-12-05
+0001,ITM005,Milk,Dairy,1,L,1,2025-12-03

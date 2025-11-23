@@ -1,30 +1,38 @@
 package pantryAppPackage.gui;
 
+import pantryAppPackage.DashboardBackend;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
+import java.io.FileNotFoundException;
 
 public class Shopping extends JPanel {
 
+    private JButton addEntryToShoppingListBtn;
+    private DefaultTableModel model;
+    private Pantry pantry;
     // SAMPLE DATA (LATER ON WE READ FROM FILES) (DELETE THIS LATER ON) -------------
     String[] columnNames = {"Item Name", "Quantity", "Unit", "Status"};
 
-    Object[][] data = {
-            {"Rice", "5", "kg", true},
-            {"Milk", "2", "L", false},
-            {"Eggs", "12", "pcs", true},
-            {"Chicken Breast", "1", "kg", false},
-            {"Butter", "0", "g", true},
-            {"Pasta", "3", "packs", true},
-            {"Tomatoes", "4", "pcs", false},
-            {"Cheese", "1", "block", true},
-    };
+//    Object[][] data = {
+//            {"Rice", "5", "kg", true},
+//            {"Milk", "2", "L", false},
+//            {"Eggs", "12", "pcs", true},
+//            {"Chicken Breast", "1", "kg", false},
+//            {"Butter", "0", "g", true},
+//            {"Pasta", "3", "packs", true},
+//            {"Tomatoes", "4", "pcs", false},
+//            {"Cheese", "1", "block", true},
+//    };
     // ------------------------------------------------------------------------------
 
 
-    Shopping (JFrame parentFrame) {
+    Shopping (JFrame parentFrame, Object[][] data, String pantryFilePath, String userID, String shoppingListFilePath, Pantry pantry) {
+        this.pantry = pantry;
+
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         setBackground(Color.WHITE);
@@ -47,7 +55,7 @@ public class Shopping extends JPanel {
         shoppingTable.setBackground(Color.WHITE);
 
         // ------------ TABLE CREATION (Start) ------------
-        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        model = new DefaultTableModel(data, columnNames) {
             @Override
             public Class<?> getColumnClass(int columnIndex) {
                 if (columnIndex == 3) return Boolean.class; // last column as checkbox
@@ -58,6 +66,47 @@ public class Shopping extends JPanel {
         JTable table = new JTable(model);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         // ------------ TABLE CREATION (End) ------------
+
+        model.addTableModelListener(e -> {
+            int row = e.getFirstRow();
+            int column = e.getColumn();
+
+            if (column == 3) {
+                Boolean purchased = (Boolean) model.getValueAt(row, column);
+
+                String itemName = model.getValueAt(row, 0).toString();
+                String quantity = model.getValueAt(row, 1).toString();
+                String unit = model.getValueAt(row, 2).toString();
+
+                try {
+                    DashboardBackend.purchaseItem(pantryFilePath, userID, itemName, purchased, quantity, shoppingListFilePath);
+                } catch (FileNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+                if (purchased) {
+                    JOptionPane.showMessageDialog(parentFrame, itemName + " (" + quantity + " " + unit + ") added to pantry!");
+                    model.setValueAt(false, row, column);
+                }
+//                else {
+//                    JOptionPane.showMessageDialog(parentFrame, itemName + " (" + quantity + " " + unit + ") removed");
+//                }
+            }
+
+//            this.pantry.getInventory().getModel().fireTableDataChanged();
+            DefaultTableModel inventoryModel = this.pantry.getInventory().getModel();
+            try {
+                String[][] updatedPantry = DashboardBackend.readTableDataFromFile(pantryFilePath, userID);
+                inventoryModel.setRowCount(0);
+                for (String[] item : updatedPantry) {
+                    inventoryModel.addRow(item);
+                }
+            } catch (FileNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
+
+        });
+
 
         // ------------ TABLE STYLING (Start) ------------
         int visibleRows = 10;
@@ -86,13 +135,13 @@ public class Shopping extends JPanel {
         buttonsPane.setLayout(new BoxLayout(buttonsPane, BoxLayout.Y_AXIS));
         buttonsPane.setBackground(Color.WHITE);
 
-        JButton addEntryBtn = new JButton("Add Entry");
+        addEntryToShoppingListBtn = new JButton("Add Entry");
         JButton removeEntryBtn = new JButton("Remove Entry");
 
-        addEntryBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, addEntryBtn.getPreferredSize().height));
+        addEntryToShoppingListBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, addEntryToShoppingListBtn.getPreferredSize().height));
         removeEntryBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, removeEntryBtn.getPreferredSize().height));
 
-        buttonsPane.add(addEntryBtn);
+        buttonsPane.add(addEntryToShoppingListBtn);
         buttonsPane.add(Box.createVerticalGlue());
         buttonsPane.add(removeEntryBtn);
 
@@ -100,7 +149,7 @@ public class Shopping extends JPanel {
         shoppingTable.add(Box.createRigidArea(new Dimension(10, 0)));
         shoppingTable.add(buttonsPane);
 
-        addEntryBtn.addActionListener(e -> {
+        addEntryToShoppingListBtn.addActionListener(e -> {
             String[] entryDetails = AddEntryDialogBox.showFormDialog(parentFrame);
 
             if (entryDetails != null) {
@@ -130,4 +179,10 @@ public class Shopping extends JPanel {
         add(Box.createVerticalGlue());
 
     }
+
+    public DefaultTableModel getModel() {
+        return model;
+    }
+
+    public void setPantry(Pantry pantry) {this.pantry = pantry;}
 }

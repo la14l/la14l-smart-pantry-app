@@ -17,7 +17,7 @@ public class Pantry extends JPanel {
     private String pantryFilePath;
     private String currentUserID;
 
-    Pantry (String[][] inventoryData, String pantryFilePath, String userID) {
+    Pantry (String[][] inventoryData, String pantryFilePath, String userID, String shoppingListFilePath, Shopping shopping) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         setBackground(Color.WHITE);
@@ -25,7 +25,7 @@ public class Pantry extends JPanel {
         this.pantryFilePath = pantryFilePath;
         this.currentUserID = userID;
         SearchFilter searchFilter = new SearchFilter();
-        inventory = new Inventory(inventoryData, pantryFilePath, userID);
+        inventory = new Inventory(inventoryData, pantryFilePath, userID, shoppingListFilePath, shopping);
         addItemPantry = new AddItemPantry();
         AddItemButton = addItemPantry.getAddItemBtn();
 
@@ -50,6 +50,8 @@ public class Pantry extends JPanel {
         add(new JSeparator(SwingConstants.HORIZONTAL));
         add(addItemPantry);
     }
+
+    public Inventory getInventory() {return inventory;}
 
     private class AddItemButtonHandler implements ActionListener {
 
