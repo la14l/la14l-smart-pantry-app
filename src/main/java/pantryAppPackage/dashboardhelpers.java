@@ -22,15 +22,10 @@ public interface DashboardHelpers {
     }
 
     //autogenerating id for item
-    public void autogenerateID(){
-        static int i=1;
-        
-        default String generateId(){
-            String ID= String.format("item%04d",i);
-            ID++;//increment 
-            return ID;
+    static String autogenerateID(int number) {
+        return String.format("item%04d", number);
     }
-}
+
 
     // validating inputs 
     // strings can't be empty 
