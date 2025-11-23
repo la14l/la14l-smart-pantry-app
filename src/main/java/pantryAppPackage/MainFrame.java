@@ -31,8 +31,11 @@ public class MainFrame extends JFrame implements PanelSwitchable {
         // Populate the inventory data into the GUI
         String[][] inventoryData = DashboardBackend.readTableDataFromFile("src/main/resources/pantry.txt", user.getID());
 
+        DashboardBackend.createOrUpdateShoppingList("src/main/resources/pantry.txt", user.getID(), "src/main/resources/shopping_lists.txt");
+        Object[][] shoppingData = DashboardBackend.getLowStockItemsFromShoppingFile("src/main/resources/shopping_lists.txt", user.getID());
+
         // Load the dashboard
-        Dashboard dash = new Dashboard(user, this, inventoryData, "src/main/resources/pantry.txt", user.getID());
+        Dashboard dash = new Dashboard(user, this, inventoryData, "src/main/resources/pantry.txt", user.getID(), shoppingData, "src/main/resources/shopping_lists.txt");
         setContentPane(dash);
         pack();
         setLocationRelativeTo(null);

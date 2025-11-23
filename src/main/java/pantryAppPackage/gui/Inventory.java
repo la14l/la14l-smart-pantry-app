@@ -6,6 +6,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,7 +41,7 @@ public class Inventory extends JPanel {
             Arrays.asList(null, null, null)  // 0=text, 1=expiry, 2=low stock
     );
 
-    Inventory (String[][] data, String filePath, String userID) {
+    Inventory (String[][] data, String filePath, String userID, String shoppingListFilePath, Shopping shopping) {
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         setBackground(Color.WHITE);
@@ -143,6 +144,18 @@ public class Inventory extends JPanel {
 
             editableRow = -1;
             saveChangesBtn.setEnabled(false);
+
+            try {
+                DashboardBackend.createOrUpdateShoppingList(filePath, userID, shoppingListFilePath);
+                Object[][] updatedShoppingData = DashboardBackend.getLowStockItemsFromShoppingFile(shoppingListFilePath, userID);
+                DefaultTableModel shoppingModel = shopping.getModel();
+                shoppingModel.setRowCount(0); // Clear old rows
+                for (Object[] k : updatedShoppingData) {
+                    shoppingModel.addRow(k);
+                }
+            } catch (FileNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
         });
 
         restockBtn.addActionListener(e -> {
@@ -163,6 +176,18 @@ public class Inventory extends JPanel {
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
+            }
+
+            try {
+                DashboardBackend.createOrUpdateShoppingList(filePath, userID, shoppingListFilePath);
+                Object[][] updatedShoppingData = DashboardBackend.getLowStockItemsFromShoppingFile(shoppingListFilePath, userID);
+                DefaultTableModel shoppingModel = shopping.getModel();
+                shoppingModel.setRowCount(0); // Clear old rows
+                for (Object[] k : updatedShoppingData) {
+                    shoppingModel.addRow(k);
+                }
+            } catch (FileNotFoundException ex) {
+                throw new RuntimeException(ex);
             }
         });
 
@@ -185,6 +210,18 @@ public class Inventory extends JPanel {
                     throw new RuntimeException(ex);
                 }
             }
+
+            try {
+                DashboardBackend.createOrUpdateShoppingList(filePath, userID, shoppingListFilePath);
+                Object[][] updatedShoppingData = DashboardBackend.getLowStockItemsFromShoppingFile(shoppingListFilePath, userID);
+                DefaultTableModel shoppingModel = shopping.getModel();
+                shoppingModel.setRowCount(0); // Clear old rows
+                for (Object[] k : updatedShoppingData) {
+                    shoppingModel.addRow(k);
+                }
+            } catch (FileNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
         });
 
         deleteItemBtn.addActionListener(e -> {
@@ -204,6 +241,18 @@ public class Inventory extends JPanel {
             // Update the GUI
             if (row != -1) {
                 model.removeRow(row);
+            }
+
+            try {
+                DashboardBackend.createOrUpdateShoppingList(filePath, userID, shoppingListFilePath);
+                Object[][] updatedShoppingData = DashboardBackend.getLowStockItemsFromShoppingFile(shoppingListFilePath, userID);
+                DefaultTableModel shoppingModel = shopping.getModel();
+                shoppingModel.setRowCount(0); // Clear old rows
+                for (Object[] k : updatedShoppingData) {
+                    shoppingModel.addRow(k);
+                }
+            } catch (FileNotFoundException ex) {
+                throw new RuntimeException(ex);
             }
 
         });
