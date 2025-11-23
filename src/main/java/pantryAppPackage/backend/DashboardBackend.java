@@ -13,7 +13,7 @@ public class DashboardBackend {
 
         while (database.hasNextLine()) {
             String entry = database.nextLine();
-            String[] fields = entry.split(",");
+            String[] fields = entry.split("\\|");
             if (fields[0].equals(userID) && fields.length > 1) {
                 numberOfLines++;
             }
