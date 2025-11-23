@@ -196,7 +196,7 @@ public class Inventory extends JPanel {
             if (row != -1) {
                 // Update the GUI
                 int qty = Integer.parseInt(table.getValueAt(row, 3).toString());
-                qty -= 1;
+                if (qty - 1 >= 0) {qty -= 1;}
                 table.setValueAt(qty, row, 3);
 
                 // Update the PANTRY FILE
