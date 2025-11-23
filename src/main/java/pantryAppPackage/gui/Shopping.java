@@ -141,13 +141,26 @@ public class Shopping extends JPanel {
 
             if (entryDetails != null) {
                 model.addRow(new Object[]{entryDetails[0], entryDetails[1], entryDetails[2], false});
+
+                try {
+                    DashboardBackend.addUserEntryToShoppingList(shoppingListFilePath, userID, new String[]{entryDetails[0], entryDetails[1], entryDetails[2], Boolean.toString(false)});
+                } catch (FileNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
 
         removeEntryBtn.addActionListener(e -> {
             int row = table.getSelectedRow();
+            String[] itemData = new String[]{model.getValueAt(row, 0).toString(), model.getValueAt(row, 1).toString(), model.getValueAt(row, 2).toString(), model.getValueAt(row, 3).toString()};
             if (row != -1) {
                 model.removeRow(row);
+            }
+
+            try {
+                DashboardBackend.removeUserEntryFromShoppingList(shoppingListFilePath, userID, itemData);
+            } catch (FileNotFoundException ex) {
+                throw new RuntimeException(ex);
             }
         });
 

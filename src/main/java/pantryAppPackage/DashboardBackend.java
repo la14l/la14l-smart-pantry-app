@@ -192,14 +192,13 @@ public class DashboardBackend {
         if (!userHasAShoppingList) {
             shoppingListID = "SL" + (int)(Math.random() * 10000);
             for (Object[] lowStockItem : userLowStockItemsFromPantry) {
-                shoppingFileTable.add(new String[]{userID, shoppingListID, LocalDate.now().toString(), lowStockItem[0].toString(), lowStockItem[1].toString(), lowStockItem[2].toString(), lowStockItem[3].toString()});
+                shoppingFileTable.add(new String[]{userID, shoppingListID, LocalDate.now().toString(), lowStockItem[0].toString(), lowStockItem[1].toString(), lowStockItem[2].toString(), lowStockItem[3].toString(), "AUTO"});
             }
-            // End the function here
         }
         // If the user does have a shopping list, update it
         else {
             // Remove all existing rows for this user from shoppingFileTable
-            shoppingFileTable.removeIf(row -> row[0].equals(userID));
+            shoppingFileTable.removeIf(row -> row[0].equals(userID) && row[7].equals("AUTO"));
 
             // Re-add all current low stock items for this user
             for (Object[] lowStockItem : userLowStockItemsFromPantry) {
@@ -210,7 +209,8 @@ public class DashboardBackend {
                         lowStockItem[0].toString(), // item name
                         lowStockItem[1].toString(), // quantity
                         lowStockItem[2].toString(), // unit
-                        lowStockItem[3].toString()  // expiry
+                        lowStockItem[3].toString(),  // purchased?
+                        "AUTO"                  // status
                 });
             }
         }
@@ -273,4 +273,65 @@ public class DashboardBackend {
         }
         writer2.close();
     }
+
+    public static void addUserEntryToShoppingList(String shoppingListFilePath, String userID, String[] itemData) throws FileNotFoundException {
+        ArrayList<String[]> shoppingFileTable = new ArrayList<>();
+        String shoppingListID = "";
+        String dateCreated = "";
+        Scanner shoppingFileContent = new Scanner(new FileReader(shoppingListFilePath));
+        while (shoppingFileContent.hasNextLine()) {
+            String entry = shoppingFileContent.nextLine();
+            String[] shoppingFileRow = entry.split(",");
+            shoppingFileTable.add(shoppingFileRow);
+        }
+        shoppingFileContent.close();
+
+        for (String[] row : shoppingFileTable) {
+            if (row[0].equals(userID)) {
+                shoppingListID = row[1];
+                dateCreated = row[2];
+                break;
+            }
+        }
+
+        shoppingFileTable.add(new String[]{
+                userID,               // userID
+                shoppingListID,       // shoppingListID
+                dateCreated,          // original creation date
+                itemData[0].toString(), // item name
+                itemData[1].toString(), // quantity
+                itemData[2].toString(), // unit
+                itemData[3].toString(),  // purchased?
+                "USER"                  // status
+        });
+
+        PrintWriter writer = new PrintWriter(shoppingListFilePath);
+        for (String[] row : shoppingFileTable) {
+            writer.println(String.join(",", row));
+        }
+        writer.close();
+    }
+
+    public static void removeUserEntryFromShoppingList(String shoppingListFilePath, String userID, String[] itemData) throws FileNotFoundException {
+        ArrayList<String[]> shoppingFileTable = new ArrayList<>();
+
+        // Get the file content
+        Scanner shoppingFileContent = new Scanner(new FileReader(shoppingListFilePath));
+        while (shoppingFileContent.hasNextLine()) {
+            String entry = shoppingFileContent.nextLine();
+            String[] shoppingFileRow = entry.split(",");
+            shoppingFileTable.add(shoppingFileRow);
+        }
+        shoppingFileContent.close();
+
+        shoppingFileTable.removeIf(row -> row[0].equals(userID) && row[3].equals(itemData[0]) && row[7].equals("USER"));
+
+        // Set the file content
+        PrintWriter writer = new PrintWriter(shoppingListFilePath);
+        for (String[] row : shoppingFileTable) {
+            writer.println(String.join(",", row));
+        }
+        writer.close();
+    }
+
 }
