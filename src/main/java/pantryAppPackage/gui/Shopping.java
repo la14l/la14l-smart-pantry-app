@@ -14,20 +14,7 @@ public class Shopping extends JPanel {
     private JButton addEntryToShoppingListBtn;
     private DefaultTableModel model;
     private Pantry pantry;
-    // SAMPLE DATA (LATER ON WE READ FROM FILES) (DELETE THIS LATER ON) -------------
     String[] columnNames = {"Item Name", "Quantity", "Unit", "Status"};
-
-//    Object[][] data = {
-//            {"Rice", "5", "kg", true},
-//            {"Milk", "2", "L", false},
-//            {"Eggs", "12", "pcs", true},
-//            {"Chicken Breast", "1", "kg", false},
-//            {"Butter", "0", "g", true},
-//            {"Pasta", "3", "packs", true},
-//            {"Tomatoes", "4", "pcs", false},
-//            {"Cheese", "1", "block", true},
-//    };
-    // ------------------------------------------------------------------------------
 
 
     Shopping (JFrame parentFrame, Object[][] data, String pantryFilePath, String userID, String shoppingListFilePath, Pantry pantry) {
