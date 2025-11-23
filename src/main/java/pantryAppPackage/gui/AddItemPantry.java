@@ -120,10 +120,10 @@ public class AddItemPantry extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e)  {
-            if (Name.getText().equals("") || Category.getText().equals("") || Quantity.getText().equals("") || Unit.getText().equals("") || Threshold.getText().equals("") || ExpiryDate.getText().equals("")) {
+            if (Name.getText().isEmpty() || Category.getText().isEmpty() || Quantity.getText().isEmpty() || Unit.getText().isEmpty() || Threshold.getText().isEmpty() || ExpiryDate.getText().isEmpty()) {
                 AddItemBtn.setEnabled(false);
             } else {
-                AddItemBtn.setEnabled(true);
+                AddItemBtn.setEnabled(validateInput());
             }
         }
     }
@@ -144,12 +144,31 @@ public class AddItemPantry extends JPanel {
     public void setItemExpiryDate(String value) { ExpiryDate.setText(value); }
 
 
-    // TEST - REMOVE LATER
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Add Item");
-        frame.add(new AddItemPantry());
-        frame.pack();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
+    public boolean validateInput() {
+        // Check if the date format is valid.
+        if (!getItemExpiryDate().contains("-") || getItemExpiryDate().length() != 10) {
+            JOptionPane.showMessageDialog(this, "Please enter the date in the format YYYY-MM-DD, and add zeros where needed.");
+            return false;
+        }
+        // Check if words are entered instead of integer for quantity and threshold
+        else if (isNotInteger(getItemQuantity())) {
+            System.out.println(getItemQuantity());
+            JOptionPane.showMessageDialog(this, "Quantity should be an Integer");
+            return false;
+        }
+        else if (isNotInteger(getItemThreshold())) {
+            JOptionPane.showMessageDialog(this, "Threshold should be an Integer");
+            return false;
+        }
+        return true;
+    }
+
+    public boolean isNotInteger(String string) {
+        try {
+            Integer.parseInt(string);
+        } catch (NumberFormatException e) {
+            return true;
+        }
+        return false;
     }
 }
