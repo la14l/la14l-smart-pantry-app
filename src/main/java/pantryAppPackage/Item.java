@@ -1,9 +1,14 @@
 package pantryAppPackage;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+
 public class Item {
     //attributes
     private String itemID, itemName, itemCategory, itemExpDate, itemUnit;
     private int itemQuantity, itemThreshold;
+  
 
     //default constructor
     public Item() {
@@ -75,10 +80,19 @@ public class Item {
     }
 
     //method to check if item is low in stock
+    
     public boolean isLowStock() {
-        //when item quantity is less than a threshold, then item is low in stock
+    // threshold and quantity must be valid
+        if (itemThreshold < 0) {
+            throw new IllegalArgumentException("threshold cannot be negative");
+        }
+        if (itemQuantity < 0) {
+            throw new IllegalArgumentException("quantity cannot be negative");
+        }
+    // when quantity is less than threshold, it's low in stock
         return itemQuantity < itemThreshold;
     }
+
 
     //method to check if an item is about to expire
     public boolean isAboutToExpire(String currentDate) {
@@ -86,13 +100,6 @@ public class Item {
         if (itemExpDate == null || itemExpDate.isEmpty()) {
             return false;
         }
-
-        //asking user for today's date
-        //Scanner inputDate = new Scanner(System.in);
-        //System.out.print("Enter today's date please (Y/M/D): ");
-        //String currentDate = inputDate.nextLine();
-        //System.out.print("Enter expiry date (Y/M/D): ");
-        //String expDate = input.nextLine();
 
         //user must enter date in the correct format
         if (currentDate.length() != 10 || itemExpDate.length() != 10) {
